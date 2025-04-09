@@ -1,30 +1,30 @@
 ---
-// Starfield.astro
----
 
-<canvas id="starfield" class="absolute top-0 left-0 w-full h-full z-[-1]"></canvas>
+---
+<div class="fixed top-0 left-0 w-full h-full z-[-1]">
+    <canvas id="starfield" class="w-full h-full"></canvas>
+</div>
 
 <script>
   import * as THREE from 'three';
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
   const renderer = new THREE.WebGLRenderer({
     canvas: document.getElementById('starfield'),
     alpha: true
   });
-  
   renderer.setSize(window.innerWidth, window.innerHeight);
-  
-  // Create stars
+
+  const textureLoader = new THREE.TextureLoader();
+
+  // Starfield
   const starGeometry = new THREE.BufferGeometry();
   const starCount = 5000;
   const positions = new Float32Array(starCount * 3);
-  
   for (let i = 0; i < starCount * 3; i++) {
-    positions[i] = (Math.random() - 0.5) * 2000;
+    positions[i] = (Math.random() - 0.5) * 5000;
   }
-  
   starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
   const starMaterial = new THREE.PointsMaterial({
     color: 0xffffff,
@@ -32,37 +32,126 @@
     transparent: true,
     opacity: 0.8
   });
-  
   const stars = new THREE.Points(starGeometry, starMaterial);
   scene.add(stars);
-  
-  camera.position.z = 1;
-  
-  // Animation
+
+  // Sun
+  const sunGroup = new THREE.Group();
+  const sunGeometry = new THREE.SphereGeometry(50, 64, 64);
+  const sunMaterial = new THREE.MeshBasicMaterial({
+    map: textureLoader.load('/sun.jpg'),
+    emissive: 0xffff00,
+    emissiveIntensity: 1
+  });
+  const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+  sunGroup.add(sun);
+  scene.add(sunGroup);
+
+  // Planets
+  const planets = [
+    { name: 'Mercury', size: 2, distance: 70, speed: 0.00478, texture: '/mercury.jpg' },
+    { name: 'Venus', size: 4.5, distance: 90, speed: 0.00350, texture: '/venus.jpg' },
+    { name: 'Earth', size: 5, distance: 110, speed: 0.00298, texture: '/earth.jpg' },
+    { name: 'Mars', size: 2.5, distance: 130, speed: 0.00241, texture: '/mars.jpg' },
+    { name: 'Jupiter', size: 15, distance: 160, speed: 0.00131, texture: '/jupiter.jpg' },
+    { name: 'Saturn', size: 7.5, distance: 190, speed: 0.00097, texture: '/saturn.jpg', hasRings: true },
+    { name: 'Uranus', size: 9, distance: 220, speed: 0.00068, texture: '/uranus.jpg' },
+    { name: 'Neptune', size: 8.5, distance: 250, speed: 0.00054, texture: '/neptune.jpg' }
+  ];
+
+  const planetGroups = [];
+  planets.forEach(planet => {
+    const group = new THREE.Group();
+    const geometry = new THREE.SphereGeometry(planet.size, 64, 64);
+    const material = new THREE.MeshBasicMaterial({
+      map: textureLoader.load(planet.texture)
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    group.add(mesh);
+
+    if (planet.hasRings) {
+      const ringGeom = new THREE.RingGeometry(planet.size * 1.5, planet.size * 2, 32);
+      const ringMat = new THREE.MeshPhongMaterial({
+        map: textureLoader.load('/saturn-rings.jpg'),
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.8
+      });
+      const rings = new THREE.Mesh(ringGeom, ringMat);
+      rings.rotation.x = Math.PI / 2;
+      group.add(rings);
+    }
+
+    group.rotation.z = planet.name === 'Uranus' ? Math.PI / 2 : -Math.PI * 23.5 / 180;
+    group.position.set(planet.distance, 0, 0);
+    planetGroups.push({ group, ...planet });
+    scene.add(group);
+  });
+
+  // Lighting
+  const pointLight = new THREE.PointLight(0xffffff, 1.5, 1000);
+  pointLight.position.set(0, 0, 0);
+  scene.add(pointLight);
+
+  const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
+  scene.add(ambientLight);
+
+  function updateSceneLayout() {
+    const isLargeScreen = window.innerWidth >= 768;
+    const sunX = isLargeScreen ? window.innerWidth / 4 : 0;
+    sunGroup.position.set(sunX, 0, 0);
+
+    const distanceFromSun = isLargeScreen ? 350 : 300;
+    const angleInRadians = 22 * Math.PI / 180;
+    camera.position.set(
+      sunX,
+      distanceFromSun * Math.sin(angleInRadians),
+      distanceFromSun * Math.cos(angleInRadians)
+    );
+    camera.lookAt(sunX, 0, 0); 
+  }
+
+  updateSceneLayout();
+
+  let time = 0;
   function animate() {
     requestAnimationFrame(animate);
-    
-    stars.rotation.x += 0.0005;
-    stars.rotation.y += 0.0005;
-    
-    const positions = stars.geometry.attributes.position.array;
-    for (let i = 2; i < positions.length; i += 3) {
-      positions[i] -= 1;
-      if (positions[i] < -1000) {
-        positions[i] = 1000;
-      }
+    time += 1;
+
+    const starPositions = stars.geometry.attributes.position.array;
+    for (let i = 2; i < starPositions.length; i += 3) {
+      starPositions[i] -= 0.5;
+      if (starPositions[i] < -2500) starPositions[i] = 2500;
     }
     stars.geometry.attributes.position.needsUpdate = true;
-    
+    stars.rotation.x += 0.0002;
+    stars.rotation.y += 0.0002;
+
+    sun.rotation.y += 0.001;
+
+    planetGroups.forEach(planet => {
+      const angle = time * planet.speed;
+      planet.group.position.x = sunGroup.position.x + planet.distance * Math.cos(angle);
+      planet.group.position.z = planet.distance * Math.sin(angle) * 0.9;
+      planet.group.children[0].rotation.y += 0.01 / planet.size;
+      if (planet.name === 'Earth' && planet.group.children[1]) {
+        planet.group.children[1].rotation.y += 0.015 / planet.size;
+      }
+      if (planet.hasRings && planet.group.children[1]) {
+        planet.group.children[1].rotation.z += 0.001;
+      }
+    });
+
     renderer.render(scene, camera);
   }
-  
+
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    updateSceneLayout();
   });
-  
+
   animate();
 </script>
 
@@ -70,4 +159,5 @@
   #starfield {
     background: #000000;
   }
+
 </style>

@@ -1,8 +1,7 @@
 ---
-// EarthCanvas.astro
 ---
 
-<div class="absolute top-1/2 right-[3rem] transform -translate-y-1/2 w-[800px] h-[800px]">
+<div class="relative w-full max-w-[300px] sm:max-w-[400px] md:max-w-[600px] lg:max-w-[800px] h-[300px] sm:h-[400px] md:h-[600px] lg:h-[800px] mx-auto md:absolute md:top-1/2 md:right-[3rem] md:transform md:-translate-y-1/2">
   <canvas id="earth-canvas" class="w-full h-full"></canvas>
 </div>
 
@@ -12,42 +11,41 @@
   document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('earth-canvas');
     if (!canvas) return;
-    
+
+    const container = canvas.parentElement;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ 
       canvas, 
       alpha: true, 
       antialias: true 
     });
-    renderer.setSize(800, 800);
-    
-    const earthGroup = new THREE.Group();
-    scene.add(earthGroup);
-    
-    const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
+    renderer.setSize(width, height);
+
     const textureLoader = new THREE.TextureLoader();
-    
-    const earthTexture = textureLoader.load('/earth.jpg');
-    
+
+    // Earth
+    const earthGroup = new THREE.Group();
+    const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
     const earthMaterial = new THREE.MeshPhongMaterial({
-      map: earthTexture,
+      map: textureLoader.load('/earth.jpg'),
       shininess: 10
     });
-    
     const earth = new THREE.Mesh(earthGeometry, earthMaterial);
     earthGroup.add(earth);
-    
+
     const cloudGeometry = new THREE.SphereGeometry(1.02, 64, 64);
     const cloudMaterial = new THREE.MeshPhongMaterial({
       map: textureLoader.load('/clouds.jpg'),
       transparent: true,
       opacity: 0.5
     });
-    
     const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
     earthGroup.add(clouds);
-    
+
     const atmosphereGeometry = new THREE.SphereGeometry(1.1, 64, 64);
     const atmosphereMaterial = new THREE.MeshPhongMaterial({
       color: 0xffffff,
@@ -55,26 +53,109 @@
       opacity: 0.1,
       side: THREE.BackSide
     });
-    
     const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
     earthGroup.add(atmosphere);
-    
-    earthGroup.rotation.z = -Math.PI * 23.5 / 180;
-    
-    earthGroup.rotation.y = Math.PI * 0.3;
-    
+    earthGroup.position.set(0, 0, 0);
+    scene.add(earthGroup);
+
+    // Mars
+    const marsGroup = new THREE.Group();
+    const marsGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const marsMaterial = new THREE.MeshPhongMaterial({
+      map: textureLoader.load('/mars.jpg'),
+      shininess: 5
+    });
+    const mars = new THREE.Mesh(marsGeometry, marsMaterial);
+    marsGroup.add(mars);
+    marsGroup.position.set(2.5, 0, -2);
+    scene.add(marsGroup);
+
+    // Jupiter
+    const jupiterGroup = new THREE.Group();
+    const jupiterGeometry = new THREE.SphereGeometry(1.5, 64, 64);
+    const jupiterMaterial = new THREE.MeshPhongMaterial({
+      map: textureLoader.load('/jupiter.jpg'),
+      shininess: 15
+    });
+    const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
+    jupiterGroup.add(jupiter);
+    jupiterGroup.position.set(-3, 1, -4);
+    scene.add(jupiterGroup);
+
+    // Saturn with Rings
+    const saturnGroup = new THREE.Group();
+    const saturnGeometry = new THREE.SphereGeometry(1.2, 64, 64);
+    const saturnMaterial = new THREE.MeshPhongMaterial({
+      map: textureLoader.load('/saturn.jpg'),
+      shininess: 10
+    });
+    const saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
+    saturnGroup.add(saturn);
+
+    const ringGeometry = new THREE.RingGeometry(1.5, 2, 64);
+    const ringMaterial = new THREE.MeshPhongMaterial({
+      map: textureLoader.load('/saturn-rings.png'),
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.8
+    });
+    const rings = new THREE.Mesh(ringGeometry, ringMaterial);
+    rings.rotation.x = Math.PI / 2;
+    saturnGroup.add(rings);
+    saturnGroup.position.set(4, -1, -3);
+    scene.add(saturnGroup);
+
+    // Lighting
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(5, 3, 5).normalize();
     scene.add(directionalLight);
-    
-    camera.position.z = 2.5;
-    
+
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+    scene.add(ambientLight);
+
+    camera.position.z = 5;
+    camera.position.y = 2;
+    camera.lookAt(0, 0, 0);
+
+    // Animation variables
+    let time = 0;
+
     function animate() {
       requestAnimationFrame(animate);
+      time += 0.01;
+
+      // Earth rotation
       earthGroup.rotation.y += 0.001;
+      clouds.rotation.y += 0.0015;
+
+      // Mars rotation and orbit
+      mars.rotation.y += 0.002;
+      marsGroup.position.x = 2.5 * Math.cos(time * 0.5);
+      marsGroup.position.z = -2 + 2.5 * Math.sin(time * 0.5);
+
+      // Jupiter rotation and orbit
+      jupiter.rotation.y += 0.0008;
+      jupiterGroup.position.x = -3 * Math.cos(time * 0.3);
+      jupiterGroup.position.z = -4 + 3 * Math.sin(time * 0.3);
+
+      // Saturn rotation and orbit
+      saturn.rotation.y += 0.0012;
+      saturnGroup.position.x = 4 * Math.cos(time * 0.4);
+      saturnGroup.position.z = -3 + 4 * Math.sin(time * 0.4);
+      rings.rotation.z += 0.001;
+
       renderer.render(scene, camera);
     }
-    
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+      const newWidth = container.clientWidth;
+      const newHeight = container.clientHeight;
+      renderer.setSize(newWidth, newHeight);
+      camera.aspect = newWidth / newHeight;
+      camera.updateProjectionMatrix();
+    });
+
     animate();
   });
 </script>
