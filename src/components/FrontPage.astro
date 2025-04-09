@@ -1,4 +1,5 @@
 ---
+import Hero from "./Hero.astro"
 ---
 <div class="relative w-full h-screen overflow-hidden">
   <video 
@@ -14,21 +15,17 @@
 
   <div class="relative z-10 text-white p-6">
     <div class="flex justify-between items-center">
-        <div class="text-4xl font-medium relative after:block after:h-[2px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:font-bold"><a href="/">Manan</a></div>
-        <div class="flex gap-6 text-lg">
-          <a href="#events" class="relative after:block after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:font-bold">
-            Events
-          </a>
-          <a href="#gallery" class="relative after:block after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:font-bold">
-            Gallery
-          </a>
-          <a href="#teams" class="relative after:block after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:font-bold">
-            Teams
-          </a>
-          <a href="#register" class="relative after:block after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:font-bold">
-            Register
-          </a>
-        </div>
+      <div class="text-4xl font-medium relative after:block after:h-[2px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:font-bold">
+        <a href="/">Manan</a>
+      </div>
+      <div class="flex gap-6 text-lg">
+        <a href="#events" class="relative after:block after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:font-bold">Events</a>
+        <a href="#gallery" class="relative after:block after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:font-bold">Gallery</a>
+        <a href="#teams" class="relative after:block after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:font-bold">Teams</a>
+        <a href="#register" class="relative after:block after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:font-bold">Register</a>
+      </div>
     </div>
   </div>
+
+  <Hero />
 </div>

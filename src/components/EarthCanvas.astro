@@ -1,0 +1,80 @@
+---
+// EarthCanvas.astro
+---
+
+<div class="absolute top-1/2 right-[3rem] transform -translate-y-1/2 w-[800px] h-[800px]">
+  <canvas id="earth-canvas" class="w-full h-full"></canvas>
+</div>
+
+<script>
+  import * as THREE from 'three';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('earth-canvas');
+    if (!canvas) return;
+    
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ 
+      canvas, 
+      alpha: true, 
+      antialias: true 
+    });
+    renderer.setSize(800, 800);
+    
+    const earthGroup = new THREE.Group();
+    scene.add(earthGroup);
+    
+    const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
+    const textureLoader = new THREE.TextureLoader();
+    
+    const earthTexture = textureLoader.load('/earth.jpg');
+    
+    const earthMaterial = new THREE.MeshPhongMaterial({
+      map: earthTexture,
+      shininess: 10
+    });
+    
+    const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+    earthGroup.add(earth);
+    
+    const cloudGeometry = new THREE.SphereGeometry(1.02, 64, 64);
+    const cloudMaterial = new THREE.MeshPhongMaterial({
+      map: textureLoader.load('/clouds.jpg'),
+      transparent: true,
+      opacity: 0.5
+    });
+    
+    const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
+    earthGroup.add(clouds);
+    
+    const atmosphereGeometry = new THREE.SphereGeometry(1.1, 64, 64);
+    const atmosphereMaterial = new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.1,
+      side: THREE.BackSide
+    });
+    
+    const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+    earthGroup.add(atmosphere);
+    
+    earthGroup.rotation.z = -Math.PI * 23.5 / 180;
+    
+    earthGroup.rotation.y = Math.PI * 0.3;
+    
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(5, 3, 5).normalize();
+    scene.add(directionalLight);
+    
+    camera.position.z = 2.5;
+    
+    function animate() {
+      requestAnimationFrame(animate);
+      earthGroup.rotation.y += 0.001;
+      renderer.render(scene, camera);
+    }
+    
+    animate();
+  });
+</script>
