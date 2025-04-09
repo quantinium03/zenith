@@ -1,17 +1,10 @@
 ---
 import Hero from "./Hero.astro"
+import Starfield from "./Starfield.astro"
 ---
+
 <div class="relative w-full h-screen overflow-hidden">
-  <video 
-    autoplay 
-    muted 
-    loop 
-    playsinline 
-    class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto transform -translate-x-1/2 -translate-y-1/2 z-[-1] object-cover brightness-70"
-  >
-    <source src="/video.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
+  <Starfield />
 
   <div class="relative z-10 text-white p-6">
     <div class="flex justify-between items-center">
