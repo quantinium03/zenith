@@ -1,0 +1,199 @@
+---
+const { events = [
+  { time: "21 April 2025", title: "Code Cadet", description: "Coding Competition" },
+  { time: "23 April 2025", title: "Xunbao", description: "Online Quiz" },
+  { time: "24 April 2025", title: "Tech and Beyond", description: "Interactive Workshop" },
+  { time: "25-26 April 2025", title: "Zenith 4.0", description: "Hackathon" },
+] } = Astro.props;
+---
+
+<div class="mt-10 text-center">
+  <h1 class="text-3xl md:text-5xl font-bold tracking-tight">Hackathon Event Timeline</h1>
+</div>
+
+<div class="relative max-w-[800px] mx-auto py-[40px] px-[20px]">
+    <div id="rocket" class="rocket"><img src="/rocket.png" class="h-30 rotate-180 mt-20 ml-10 lg:ml-0"/></div>
+  <div class="timeline relative w-full" id="timeline">
+    {events.map((event, index) => (
+      <div class={`event ${index % 2 === 0 ? 'left' : 'right'}`}>
+        <div class="event-content">
+          <div class="event-time">{event.time}</div>
+          <h3>{event.title}</h3>
+          <p>{event.description}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .timeline {
+    position: relative;
+    width: 100%;
+  }
+  
+  /* Vertical line */
+  .timeline:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: linear-gradient(to bottom, #0a2342, #2a6ebb, #4a97dd);
+    transform: translateX(-50%);
+    border-radius: 4px;
+  }
+  
+  .rocket {
+    position: absolute;
+    font-size: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
+    transition: top 0.3s ease-out;
+  }
+  
+  .event {
+    position: relative;
+    width: 45%;
+    margin: 60px 0;
+    padding: 20px;
+    background-image: url('https://www.solarsystemscope.com/images/panels/panel-type-3.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .event:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  }
+  
+  .event.left {
+    margin-left: -3%;
+  }
+  
+  .event.right {
+    margin-left: 58%;
+  }
+  
+  .event:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    background: #2a6ebb;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px #4a97dd;
+  }
+  
+  .event.left:before {
+    right: -42px;
+  }
+  
+  .event.right:before {
+    left: -42px;
+  }
+  
+  .event-time {
+    font-weight: bold;
+    color: #2a6ebb;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+  }
+  
+  .event-content h3 {
+    margin: 0 0 10px 0;
+    color: #ffffff;
+    font-size: 1.4rem;
+  }
+  
+  .event-content p {
+    margin: 0;
+    color: #d1d1d1;
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .event {
+      width: 80%;
+      margin: 30px auto;
+    }
+    
+    .event.left, .event.right {
+      margin-left: 4rem;
+      margin-right: auto;
+    }
+    
+    .event:before {
+      left: -30px;
+    }
+    
+    .event.right:before {
+      left: -30px;
+    }
+    
+    .timeline:after {
+      left: 20px;
+    }
+    
+    .rocket {
+      left: 20px;
+    }
+  }
+</style>
+
+<script>
+  // Handle rocket positioning
+  function updateRocketPosition() {
+    const rocket = document.getElementById('rocket');
+    const timeline = document.getElementById('timeline');
+    
+    if (!rocket || !timeline) return;
+    
+    const timelineRect = timeline.getBoundingClientRect();
+    
+    // Calculate the visible portion of the timeline
+    const timelineTop = timelineRect.top;
+    const timelineHeight = timelineRect.height;
+    const windowHeight = window.innerHeight;
+    
+    // If timeline is visible
+    if (timelineTop < windowHeight && timelineTop + timelineHeight > 0) {
+      // Calculate the progress based on how much of the timeline is visible
+      const visibleStart = Math.max(0, -timelineTop);
+      const visibleEnd = Math.min(timelineHeight, windowHeight - timelineTop);
+      const visibleHeight = visibleEnd - visibleStart;
+      
+      // Calculate where in the timeline the rocket should be 
+      // (offset from the top of the timeline)
+      const rocketPosition = visibleStart + (visibleHeight * 0.5);
+      
+      // Make sure the rocket stays within the timeline
+      const constrainedPosition = Math.max(
+        0, 
+        Math.min(rocketPosition, timelineHeight - 50)
+      );
+      
+      // Set the rocket position
+      rocket.style.top = `${constrainedPosition}px`;
+    }
+  }
+  
+  // Initialize after page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    // Update rocket position on scroll and on page load
+    window.addEventListener('scroll', updateRocketPosition);
+    window.addEventListener('resize', updateRocketPosition);
+    
+    // Initial position update
+    updateRocketPosition();
+  });
+</script>
