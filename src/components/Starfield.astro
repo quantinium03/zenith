@@ -1,6 +1,5 @@
 ---
 ---
-
 <div class="fixed top-0 left-0 w-full h-full z-[-1]">
     <canvas id="starfield" class="w-full h-full"></canvas>
 </div>
@@ -16,7 +15,6 @@
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  // Starfield
   const starGeometry = new THREE.BufferGeometry();
   const starCount = 5000;
   const positions = new Float32Array(starCount * 3);
@@ -33,30 +31,25 @@
   const stars = new THREE.Points(starGeometry, starMaterial);
   scene.add(stars);
 
-  // Camera setup
-  camera.position.z = 1000; // Move camera back to view the starfield
+  camera.position.z = 1000;
   camera.lookAt(0, 0, 0);
 
-  // Animation
   function animate() {
     requestAnimationFrame(animate);
 
-    // Move stars along z-axis for a "falling" effect
     const starPositions = stars.geometry.attributes.position.array;
     for (let i = 2; i < starPositions.length; i += 3) {
-      starPositions[i] -= 1; // Move stars toward the camera
-      if (starPositions[i] < -2500) starPositions[i] = 2500; // Reset when past camera
+        starPositions[i] -= 1;
+      if (starPositions[i] < -2500) starPositions[i] = 2500;
     }
     stars.geometry.attributes.position.needsUpdate = true;
 
-    // Optional: Rotate the starfield for extra motion
     stars.rotation.x += 0.0002;
     stars.rotation.y += 0.0002;
 
     renderer.render(scene, camera);
   }
 
-  // Handle resize
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();

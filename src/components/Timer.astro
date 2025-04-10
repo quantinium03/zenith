@@ -1,0 +1,43 @@
+<div class="flex justify-center flex-wrap gap-2 bg-inherit p-4" id="timer">
+    <img src="/meter_tube.png" class="w-8 lg:w-24 opacity-60" />
+    <img src="/meter_tube.png" class="w-8 lg:w-24 opacity-60" />
+    <img src="/meter_tube.png" class="w-8 lg:w-24 opacity-60" />
+    <img src="/meter_tube.png" class="w-8 lg:w-24 opacity-60" />
+    <img src="/meter_tube.png" class="w-8 lg:w-24 opacity-60" />
+    <img src="/meter_tube.png" class="w-8 lg:w-24 opacity-60" />
+    <img src="/meter_tube.png" class="w-8 lg:w-24 opacity-60" />
+    <img src="/meter_tube.png" class="w-8 lg:w-24 opacity-60" />
+</div>
+
+<script>
+function padNumber(num) {
+    return num <= 9 ? "0" + num : "" + num;
+}
+
+window.onload = function () {
+    var tubeDiv = document.getElementById('timer');
+    var tubes = tubeDiv.getElementsByTagName('img');
+
+    function loadingAnimation() {
+        for (var i = 0; i < tubes.length; i++) {
+            tubes[i].src = i % 2 === 0 ? '/11.gif' : '/12.gif';
+        }
+    }
+
+    function updateTime() {
+        var date = new Date();
+        var timeStr = padNumber(date.getHours()) + "p" + padNumber(date.getMinutes()) + "p" + padNumber(date.getSeconds());
+        
+        for (var i = 0; i < tubes.length; i++) {
+            tubes[i].src = `/${timeStr[i]}.png`;
+        }
+    }
+
+    loadingAnimation();
+    setTimeout(function () {
+        updateTime();
+        setInterval(updateTime, 1000);
+    }, 1000);
+};
+</script>
+

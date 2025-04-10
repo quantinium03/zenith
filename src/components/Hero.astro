@@ -1,20 +1,19 @@
----
-import EarthCanvas from "./EarthCanvas.astro";
----
+<div class="relative min-h-screen w-full overflow-hidden text-[#F5DEB3]">
+  <!-- Zenith Title -->
+  <div class="absolute top-[25.57%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center">
+    <h1 class="text-8xl lg:text-[140px] font-bold">Zenith</h1>
+  </div>
 
-<div class="relative min-h-screen w-full overflow-hidden ">
-  <EarthCanvas />
-
-  <div class="relative z-10 md:absolute top-[6rem] lg:top-1/2 md:left-[3rem]  md:-translate-y-1/2 text-white md:max-w-[50%] p-6 md:p-0 flex flex-col items-center md:items-start md:text-left">
-    <h1 class="text-4xl md:text-6xl font-bold">Zenith</h1>
-    <p class="mt-4 text-xl md:text-2xl max-w-prose leading-relaxed md:leading-[2rem] font-medium text-center lg:text-left">
-      Dive into the ultimate coding marathon where 
-      creativity meets resilience. Build, innovate, 
-      and showcase your solutions  
-      to real-world challenges.
-    </p>
-    <button onClick="window.location.href='/register'" class="mt-5 font-bold px-6 py-3 text-white bg-black rounded-lg shadow-[0_0_10px_rgba(255,255,255,0.5)] transition hover:shadow-[0_0_15px_rgba(255,255,255,0.8),0_0_20px_rgba(255,255,255,0.6)] hover:scale-105">
-      Register
+  <div class="absolute top-[45%] lg:top-1/2 left-1/2 w-full transform -translate-y-1/2 -translate-x-1/2 z-10 flex flex-col items-center px-4">
+    <h1 class="text-2xl font-bold">AWAITS YOU</h1>
+    <h1 class="text-3xl font-bold mt-2">21 APRIL - 26 APRIL</h1>
+    <h1 class="text-base sm:text-lg md:text-xl font-bold pt-6 md:pt-12">Register Now with DevFolio</h1>
+    <button onclick="window.location.href='/register'" class="mt-4 md:mt-6 px-4 py-2 md:px-6 md:py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition text-sm md:text-base">
+      DEVFOLIO
     </button>
+  </div>
+
+  <div class="absolute top-[65%] md:top-[71.43%] left-1/2 transform -translate-y-1/2 -translate-x-1/2 z-10 flex flex-col items-center px-4">
+    <h1 class="text-6xl font-bold my-4 md:my-8 w-[100vw] text-center">HACK IN, GEEK OUT</h1>
   </div>
 </div>
