@@ -1,9 +1,30 @@
 ---
 import "../styles/global.css"
 import Layout from '../layouts/Layout.astro';
-import GalleryPage from '../components/GalleryPage.astro';
+import Navbar from "../components/Navbar.astro";
+const photos = Array.from({ length: 50 }, (_, i) => `/events/event${i + 1}.jpg`);
 ---
 
 <Layout>
-    <GalleryPage/>
+    <div class="text-white p-4 md:p-6 relative ">
+        <Navbar />
+        <section
+            class="mt-8 px-8 pb-16 min-h-screen flex justify-center items-center">
+            <div class="border-2 border-cyan-400 rounded-2xl p-8 shadow-cyan-400/50 shadow-lg w-full max-w-7xl">
+
+                <h2 class="text-4xl font-bold text-cyan-400 text-center mb-12">Events Gallery</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    {photos.map((photo, index) => (
+                    <div
+                        class="border border-cyan-400 rounded-2xl p-4 shadow-md hover:shadow-cyan-400/50 transition-all duration-300 mt-2">
+                        <img src="Event.png" alt={`Event`}
+                            class="rounded-lg w-full h-60 object-cover hover:scale-105 transition-transform duration-300" />
+                    </div>
+                    ))}
+                </div>
+
+            </div>
+        </section>
+    </div>
 </Layout>

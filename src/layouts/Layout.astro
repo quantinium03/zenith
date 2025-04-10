@@ -10,7 +10,7 @@ import Starfield from "../components/Starfield.astro"
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro Basics</title>
 	</head>
-	<body>
+    <body>
         <Starfield />
         <div class="relative z-10">
             <slot />
@@ -19,10 +19,15 @@ import Starfield from "../components/Starfield.astro"
 </html>
 
 <style>
+    @font-face {
+        font-family: 'sf-fource';
+        src: url('/fonts/sf-fourche.regular.ttf');
+    }
 	html,
 	body {
 		margin: 0;
 		width: 100%;
 		height: 100%;
+        font-family: 'sf-fource';
 	}
 </style>

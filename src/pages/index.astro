@@ -1,10 +1,18 @@
 ---
 import "../styles/global.css"
 import Layout from '../layouts/Layout.astro';
-import FrontPage from '../components/FrontPage.astro';
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import Events from "../components/Events.astro";
+import FAQ from "../components/FAQ.astro";
 ---
 
 <Layout>
-    <FrontPage />
+    <div class="text-white relative ">
+      <Navbar />
+      <Hero />
+      <Events />
+      <FAQ />
+    </div>
 </Layout>
 
