@@ -1,13 +1,20 @@
 ---
+import EarthCanvas from "./EarthCanvas.astro";
 ---
 
-<section class="relative min-h-[80vh] md:min-h-screen flex flex-col justify-center items-center md:items-start z-20">
-<div class="w-full md:max-w-[50%] text-center md:text-left px-4 md:pl-12">
-  <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-purple-200">Zenith</h1>
-  <p class="mt-4 text-lg sm:text-xl md:text-2xl max-w-prose leading-relaxed text-gray-300">
-    Dive into the ultimate coding marathon where 
-    creativity meets resilience. Build, innovate, 
-    and showcase your solutions to real-world challenges.
-  </p>
+<div class="relative min-h-screen w-full overflow-hidden ">
+  <EarthCanvas />
+
+  <div class="relative z-10 md:absolute top-[6rem] lg:top-1/2 md:left-[3rem]  md:-translate-y-1/2 text-white md:max-w-[50%] p-6 md:p-0 flex flex-col items-center md:items-start md:text-left">
+    <h1 class="text-4xl md:text-6xl font-bold">Zenith</h1>
+    <p class="mt-4 text-xl md:text-2xl max-w-prose leading-relaxed md:leading-[2rem] font-medium text-center lg:text-left">
+      Dive into the ultimate coding marathon where 
+      creativity meets resilience. Build, innovate, 
+      and showcase your solutions  
+      to real-world challenges.
+    </p>
+    <button onClick="window.location.href='/register'" class="mt-5 font-bold px-6 py-3 text-white bg-black rounded-lg shadow-[0_0_10px_rgba(255,255,255,0.5)] transition hover:shadow-[0_0_15px_rgba(255,255,255,0.8),0_0_20px_rgba(255,255,255,0.6)] hover:scale-105">
+      Register
+    </button>
+  </div>
 </div>
-</section>

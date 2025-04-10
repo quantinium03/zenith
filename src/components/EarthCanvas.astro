@@ -1,8 +1,9 @@
 ---
+const { class: className } = Astro.props; // Allow custom classes if needed
 ---
 
-<div class="relative w-full max-w-[300px] sm:max-w-[400px] md:max-w-[600px] lg:max-w-[800px] h-[300px] sm:h-[400px] md:h-[600px] lg:h-[800px] mx-auto md:absolute md:top-1/2 md:right-[3rem] md:transform md:-translate-y-1/2">
-  <canvas id="earth-canvas" class="w-full h-full"></canvas>
+<div class="earth-container relative w-full md:absolute md:top-1/2 md:right-0 md:-translate-y-1/2 z-0 md:z-10">
+  <canvas id="earth-canvas" class="w-full h-full ml-0 lg:ml-[500px]"></canvas>
 </div>
 
 <script>
@@ -58,52 +59,17 @@
     earthGroup.position.set(0, 0, 0);
     scene.add(earthGroup);
 
-    // Mars
-    const marsGroup = new THREE.Group();
-    const marsGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-    const marsMaterial = new THREE.MeshPhongMaterial({
-      map: textureLoader.load('/mars.jpg'),
+    // Moon
+    const moonGroup = new THREE.Group();
+    const moonGeometry = new THREE.SphereGeometry(0.27, 32, 32);
+    const moonMaterial = new THREE.MeshPhongMaterial({
+      map: textureLoader.load('/moon.jpg'),
       shininess: 5
     });
-    const mars = new THREE.Mesh(marsGeometry, marsMaterial);
-    marsGroup.add(mars);
-    marsGroup.position.set(2.5, 0, -2);
-    scene.add(marsGroup);
-
-    // Jupiter
-    const jupiterGroup = new THREE.Group();
-    const jupiterGeometry = new THREE.SphereGeometry(1.5, 64, 64);
-    const jupiterMaterial = new THREE.MeshPhongMaterial({
-      map: textureLoader.load('/jupiter.jpg'),
-      shininess: 15
-    });
-    const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
-    jupiterGroup.add(jupiter);
-    jupiterGroup.position.set(-3, 1, -4);
-    scene.add(jupiterGroup);
-
-    // Saturn with Rings
-    const saturnGroup = new THREE.Group();
-    const saturnGeometry = new THREE.SphereGeometry(1.2, 64, 64);
-    const saturnMaterial = new THREE.MeshPhongMaterial({
-      map: textureLoader.load('/saturn.jpg'),
-      shininess: 10
-    });
-    const saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
-    saturnGroup.add(saturn);
-
-    const ringGeometry = new THREE.RingGeometry(1.5, 2, 64);
-    const ringMaterial = new THREE.MeshPhongMaterial({
-      map: textureLoader.load('/saturn-rings.png'),
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.8
-    });
-    const rings = new THREE.Mesh(ringGeometry, ringMaterial);
-    rings.rotation.x = Math.PI / 2;
-    saturnGroup.add(rings);
-    saturnGroup.position.set(4, -1, -3);
-    scene.add(saturnGroup);
+    const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+    moonGroup.add(moon);
+    moonGroup.position.set(2.2, 0, 0);
+    scene.add(moonGroup);
 
     // Lighting
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -113,36 +79,29 @@
     const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
     scene.add(ambientLight);
 
-    camera.position.z = 5;
-    camera.position.y = 2;
-    camera.lookAt(0, 0, 0);
+    // Responsive camera setup
+    function updateCamera() {
+      const isSmallScreen = window.innerWidth < 768;
+      camera.position.z = isSmallScreen ? 4.5 : 3.5; // Further back to fit Moon orbit
+      camera.position.y = isSmallScreen ? 1 : 0.5;
+      camera.lookAt(0, 0, 0);
+    }
+    updateCamera();
 
-    // Animation variables
+    // Animation
     let time = 0;
-
     function animate() {
       requestAnimationFrame(animate);
       time += 0.01;
 
-      // Earth rotation
       earthGroup.rotation.y += 0.001;
       clouds.rotation.y += 0.0015;
 
-      // Mars rotation and orbit
-      mars.rotation.y += 0.002;
-      marsGroup.position.x = 2.5 * Math.cos(time * 0.5);
-      marsGroup.position.z = -2 + 2.5 * Math.sin(time * 0.5);
-
-      // Jupiter rotation and orbit
-      jupiter.rotation.y += 0.0008;
-      jupiterGroup.position.x = -3 * Math.cos(time * 0.3);
-      jupiterGroup.position.z = -4 + 3 * Math.sin(time * 0.3);
-
-      // Saturn rotation and orbit
-      saturn.rotation.y += 0.0012;
-      saturnGroup.position.x = 4 * Math.cos(time * 0.4);
-      saturnGroup.position.z = -3 + 4 * Math.sin(time * 0.4);
-      rings.rotation.z += 0.001;
+      // Adjusted moon orbit radius to 2.5 to ensure it stays in view
+      const moonOrbitRadius = 2.5;
+      moonGroup.position.x = moonOrbitRadius * Math.cos(time * 0.5);
+      moonGroup.position.z = moonOrbitRadius * Math.sin(time * 0.5);
+      moon.rotation.y += 0.002;
 
       renderer.render(scene, camera);
     }
@@ -154,8 +113,29 @@
       renderer.setSize(newWidth, newHeight);
       camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
+      updateCamera();
     });
 
     animate();
   });
 </script>
+
+<style>
+  .earth-container {
+    transition: all 0.3s ease;
+  }
+
+  @media (max-width: 767px) {
+    .earth-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      z-index: 0;
+      margin: 0;
+      transform: none;
+    }
+  }
+</style>
