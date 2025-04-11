@@ -12,10 +12,10 @@ const { events = [
 </div>
 
 <div class="relative max-w-[800px] mx-auto py-[40px] px-[20px]">
-    <div id="rocket" class="rocket"><img src="/rocket.png" class="h-30 rotate-180 mt-20 ml-10 md:ml-0"/></div>
+  <div id="rocket" class="rocket"><img src="/rocket.png" class="h-30 rotate-180 mt-20 ml-10 md:ml-0"/></div>
   <div class="timeline relative w-full" id="timeline">
     {events.map((event, index) => (
-      <div class={`event ${index % 2 === 0 ? 'left' : 'right'}`}>
+      <div class={`event ${index % 2 === 0 ? 'left' : 'right'}`} data-animate>
         <div class="event-content">
           <div class="event-time">{event.time}</div>
           <h3>{event.title}</h3>
@@ -65,6 +65,7 @@ const { events = [
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     transition: transform 0.3s ease;
+    opacity: 0; /* Start hidden */
   }
   
   .event:hover {
@@ -120,6 +121,39 @@ const { events = [
     font-size: 1rem;
   }
   
+  /* Animation Keyframes */
+  .event.left.animate {
+    animation: slideInLeft 0.6s ease-out forwards;
+    opacity: 1;
+  }
+  
+  .event.right.animate {
+    animation: slideInRight 0.6s ease-out forwards;
+    opacity: 1;
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
   @media (max-width: 768px) {
     .event {
       width: 80%;
@@ -146,10 +180,17 @@ const { events = [
     .rocket {
       left: 20px;
     }
+    
+    /* Adjust animations for mobile */
+    .event.left.animate, .event.right.animate {
+      animation: slideInLeft 0.6s ease-out forwards;
+      opacity: 1;
+    }
   }
 </style>
 
 <script>
+  // Rocket animation (unchanged)
   function updateRocketPosition() {
     const rocket = document.getElementById('rocket');
     const timeline = document.getElementById('timeline');
@@ -178,10 +219,30 @@ const { events = [
     }
   }
   
+  // Slide-in animation with Intersection Observer
+  function animateEvents() {
+    const events = document.querySelectorAll('.event[data-animate]');
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const event = entry.target;
+            event.classList.add('animate');
+            observer.unobserve(event); // Stop observing once animated
+          }
+        });
+      },
+      { threshold: 0.2 } // Trigger when 20% of the event is visible
+    );
+    
+    events.forEach((event) => observer.observe(event));
+  }
+  
   document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', updateRocketPosition);
     window.addEventListener('resize', updateRocketPosition);
-    
     updateRocketPosition();
+    animateEvents();
   });
 </script>

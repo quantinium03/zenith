@@ -1,118 +1,181 @@
+---
+const faqs = [
+  {
+    question: "What is a hackathon?",
+    answer: "A Nerd Meetup"
+  },
+  {
+    question: "Who can participate?",
+    answer: "Humans"
+  },
+  {
+    question: "What should I bring?",
+    answer: "1 million dollars"
+  },
+  {
+    question: "How do I prepare?",
+    answer: "by curing cancer"
+  }
+];
+---
+
 <section id="faq" class="relative py-12 md:py-16 z-20 text-white">
-    <div class="max-w-4xl mx-auto px-4">
-        <h1 class="faq-heading text-5xl font-bold underline text-center mb-12 tracking-wider">
-            Frequently Asked Question
-        </h1>
+  <div class="max-w-4xl mx-auto px-4">
+    <h1 class="faq-heading text-5xl font-bold underline text-center mb-12 tracking-wider">
+      Frequently Asked Question
+    </h1>
 
-        <div class="space-y-4">
-            <div class="faq-item rounded-lg overflow-hidden border border-blue-500/30 shadow-lg shadow-blue-900/20 bg-gray-800/50 backdrop-blur-sm">
-                <button class="faq-question w-full text-left p-4 flex justify-between items-center text-xl font-semibold text-white hover:bg-blue-900/20 transition-colors duration-300 border-b border-blue-900">
-                    <span>What is a hackathon?</span>
-                    <span class="text-2xl transition-transform duration-300">✦</span>
-                </button>
-                <div class="faq-answer p-4 text-gray-300">
-                    <p>A Nerd Meetup</p>
-                </div>
-            </div>
-
-            <div class="faq-item rounded-lg overflow-hidden border border-blue-500/30 shadow-lg shadow-blue-900/20 bg-gray-800/50 backdrop-blur-sm">
-                <button class="faq-question w-full text-left p-4 flex justify-between items-center text-xl font-semibold text-white hover:bg-blue-900/20 transition-colors duration-300 border-b border-blue-900">
-                    <span>Who can participate?</span>
-                    <span class="text-2xl transition-transform duration-300">✦</span>
-                </button>
-                <div class="faq-answer p-4 text-gray-300">
-                    <p>Humans</p>
-                </div>
-            </div>
-
-            <div class="faq-item rounded-lg overflow-hidden border border-blue-500/30 shadow-lg shadow-blue-900/20 bg-gray-800/50 backdrop-blur-sm">
-                <button class="faq-question w-full text-left p-4 flex justify-between items-center text-xl font-semibold text-white hover:bg-blue-900/20 transition-colors duration-300 border-b border-blue-900">
-                    <span>What should I bring?</span>
-                    <span class="text-2xl transition-transform duration-300">✦</span>
-                </button>
-                <div class="faq-answer p-4 text-gray-300">
-                    <p>1 million dollars</p>
-                </div>
-            </div>
-
-            <div class="faq-item rounded-lg overflow-hidden border border-blue-500/30 shadow-lg shadow-blue-900/20 bg-gray-800/50 backdrop-blur-sm">
-                <button class="faq-question w-full text-left p-4 flex justify-between items-center text-xl font-semibold text-white hover:bg-blue-900/20 transition-colors duration-300 border-b border-blue-900">
-                    <span>How do I prepare?</span>
-                    <span class="text-2xl transition-transform duration-300">✦</span>
-                </button>
-                <div class="faq-answer p-4 text-gray-300">
-                    <p>by curing cancer</p>
-                </div>
-            </div>
+    <div class="space-y-4">
+      {faqs.map((faq, index) => (
+        <div
+          class={`faq-item rounded-lg overflow-hidden border border-blue-500/30 shadow-lg shadow-blue-900/20 bg-gray-800/50 backdrop-blur-sm ${
+            index % 2 === 0 ? 'left' : 'right'
+          }`}
+          data-animate
+        >
+          <button
+            class="faq-question w-full text-left p-4 flex justify-between items-center text-xl font-semibold text-white hover:bg-blue-900/20 transition-colors duration-300 border-b border-blue-900"
+          >
+            <span>{faq.question}</span>
+            <span class="text-2xl transition-transform duration-300">✦</span>
+          </button>
+          <div class="faq-answer p-4 text-gray-300">
+            <p>{faq.answer}</p>
+          </div>
         </div>
+      ))}
     </div>
+  </div>
 </section>
 
 <style>
-.faq-item {
+  .faq-item {
     transition: all 0.3s ease-in-out;
-}
+    opacity: 0; /* Start hidden */
+  }
 
-.faq-answer {
+  .faq-answer {
     max-height: 0;
     overflow: hidden;
     padding-top: 0;
     padding-bottom: 0;
     transition: all 0.5s ease-in-out;
-}
+  }
 
-.faq-item.active .faq-answer {
+  .faq-item.active .faq-answer {
     max-height: 200px;
     padding: 1rem;
-}
+  }
 
-.faq-item.active .faq-question {
-    background-color: rgba(#0000ff, 0.2);
-}
+  .faq-item.active .faq-question {
+    background-color: rgba(0, 0, 255, 0.2);
+  }
 
-.faq-item.active .faq-question span:last-child {
+  .faq-item.active .faq-question span:last-child {
     transform: rotate(45deg);
-}
+  }
 
-@media (max-width: 768px) {
+  .faq-item.left.animate {
+    animation: slideInLeft 0.6s ease-out forwards;
+    opacity: 1;
+  }
+
+  .faq-item.right.animate {
+    animation: slideInRight 0.6s ease-out forwards;
+    opacity: 1;
+  }
+
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
     .faq-question {
-        font-size: 1.25rem;
+      font-size: 1.25rem;
     }
-    
+
     .faq-answer {
-        font-size: 1rem;
+      font-size: 1rem;
     }
-    
+
     .faq-item.active .faq-answer {
-        max-height: 300px;
+      max-height: 300px;
     }
+
     .faq-heading {
-        font-size: 2rem;
-        line-height: 2.5rem;
+      font-size: 2rem;
+      line-height: 2.5rem;
     }
-}
+
+    .faq-item.left.animate,
+    .faq-item.right.animate {
+      animation: slideInLeft 0.6s ease-out forwards;
+      opacity: 1;
+    }
+  }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
+    // Accordion functionality
     const faqItems = document.querySelectorAll('.faq-item');
 
-    faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
+    faqItems.forEach((item) => {
+      const question = item.querySelector('.faq-question');
 
-        question.addEventListener('click', () => {
-            item.classList.toggle('active');
+      question.addEventListener('click', () => {
+        item.classList.toggle('active');
 
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item && otherItem.classList.contains('active')) {
-                    otherItem.classList.remove('active');
-                }
-            });
+        faqItems.forEach((otherItem) => {
+          if (otherItem !== item && otherItem.classList.contains('active')) {
+            otherItem.classList.remove('active');
+          }
         });
+      });
     });
 
     if (window.innerWidth > 768) {
-        faqItems[0].classList.add('active');
+      faqItems[0].classList.add('active');
     }
-});
+
+    // Slide-in animation
+    const animateFaqs = () => {
+      const faqs = document.querySelectorAll('.faq-item[data-animate]');
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const faq = entry.target;
+              faq.classList.add('animate');
+              observer.unobserve(faq); // Stop observing once animated
+            }
+          });
+        },
+        { threshold: 0.2 } // Trigger when 20% of the FAQ item is visible
+      );
+
+      faqs.forEach((faq) => observer.observe(faq));
+    };
+
+    animateFaqs();
+  });
 </script>

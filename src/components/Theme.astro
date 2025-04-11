@@ -1,3 +1,56 @@
+---
+const themes = [
+  {
+    icon: "🌱",
+    title: "AI/ML",
+    description: "Leverage artificial intelligence and machine learning to develop solutions for climate change and sustainable practices.",
+    bgImage: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80"
+  },
+  {
+    icon: "🔗",
+    title: "Blockchain",
+    description: "Build decentralized applications to enhance transparency, security, and efficiency in industries like finance and supply chain.",
+    bgImage: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80"
+  },
+  {
+    icon: "🩺",
+    title: "HealthCare",
+    description: "Innovate medical technologies and digital tools to improve patient care, diagnostics, and healthcare accessibility.",
+    bgImage: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80"
+  },
+  {
+    icon: "📚",
+    title: "Education",
+    description: "Create platforms and tools to enhance learning experiences, making education more accessible and personalized.",
+    bgImage: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80"
+  },
+  {
+    icon: "💸",
+    title: "Fintech",
+    description: "Develop innovative financial technologies to streamline payments, banking, and investment services.",
+    bgImage: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80"
+  },
+  {
+    icon: "🌍",
+    title: "Environment Sustainability",
+    description: "Design solutions to promote renewable energy, reduce waste, and protect ecosystems for a greener future.",
+    bgImage: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80"
+  },
+  {
+    icon: "🛡️",
+    title: "Women Safety",
+    description: "Build tools and systems to enhance personal security and empower women through technology-driven safety solutions.",
+    bgImage: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80"
+  },
+  {
+    icon: "💡",
+    title: "Open Innovation",
+    description: "Foster collaborative platforms to crowdsource ideas and drive creative solutions for global challenges.",
+    bgImage: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80"
+  }
+];
+---
+
 <div class="flex flex-col items-center text-center m-12 px-4">
   <h1 class="text-6xl font-bold">Themes and Tracks</h1>
   <p class="text-md max-w-prose">
@@ -15,66 +68,28 @@
 <div class="min-h-screen w-full py-16 px-4">
   <div class="max-w-7xl mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-      {[
-          {
-            "icon": "🌱",
-            "title": "AI/ML",
-            "description": "Leverage artificial intelligence and machine learning to develop solutions for climate change and sustainable practices.",
-            "bgImage": "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80"
-          },
-          {
-            "icon": "🔗",
-            "title": "Blockchain",
-            "description": "Build decentralized applications to enhance transparency, security, and efficiency in industries like finance and supply chain.",
-            "bgImage": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80"
-          },
-          {
-            "icon": "🩺",
-            "title": "HealthCare",
-            "description": "Innovate medical technologies and digital tools to improve patient care, diagnostics, and healthcare accessibility.",
-            "bgImage": "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80"
-          },
-          {
-            "icon": "📚",
-            "title": "Education",
-            "description": "Create platforms and tools to enhance learning experiences, making education more accessible and personalized.",
-            "bgImage": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80"
-          },
-          {
-            "icon": "💸",
-            "title": "Fintech",
-            "description": "Develop innovative financial technologies to streamline payments, banking, and investment services.",
-            "bgImage": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80"
-          },
-          {
-            "icon": "🌍",
-            "title": "Environment Sustainability",
-            "description": "Design solutions to promote renewable energy, reduce waste, and protect ecosystems for a greener future.",
-            "bgImage": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80"
-          },
-          {
-            "icon": "🛡️",
-            "title": "Women Safety",
-            "description": "Build tools and systems to enhance personal security and empower women through technology-driven safety solutions.",
-            "bgImage": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80"
-          },
-          {
-            "icon": "💡",
-            "title": "Open Innovation",
-            "description": "Foster collaborative platforms to crowdsource ideas and drive creative solutions for global challenges.",
-            "bgImage": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80"
-          }
-      ].map(theme => (
-        <div class="relative overflow-hidden shadow-lg rounded-lg">
-          <div class="absolute inset-0 bg-no-repeat bg-cover" 
-               style="background-image: url('https://www.solarsystemscope.com/images/panels/panel-type-3.png'); background-size: 110% 110%; background-position: center;"></div>
-          <div class="relative m-4 h-64 bg-cover bg-center" 
-               style={` background-size: cover; background-position: center;`}>
+      {themes.map((theme, index) => (
+        <div
+          class={`relative overflow-hidden shadow-lg rounded-lg theme-card ${
+            index % 2 === 0 ? 'left' : 'right'
+          }`}
+          data-animate
+        >
+          <div
+            class="absolute inset-0 bg-no-repeat bg-cover"
+            style="background-image: url('https://www.solarsystemscope.com/images/panels/panel-type-3.png'); background-size: 110% 110%; background-position: center;"
+          ></div>
+          <div
+            class="relative m-4 h-64 bg-cover bg-center"
+            style="background-size: cover; background-position: center;"
+          >
             <div class="absolute inset-0"></div>
             <div class="absolute bottom-0 left-0 p-6">
               <div class="text-4xl mb-2">{theme.icon}</div>
               <h3 class="text-xl font-semibold mb-2">{theme.title}</h3>
-              <p class="text-indigo-200/90 text-sm leading-relaxed">{theme.description}</p>
+              <p class="text-indigo-200/90 text-sm leading-relaxed">
+                {theme.description}
+              </p>
             </div>
           </div>
         </div>
@@ -82,3 +97,80 @@
     </div>
   </div>
 </div>
+
+<style>
+  .theme-card {
+    opacity: 0; /* Start hidden */
+    transition: transform 0.3s ease;
+  }
+
+  .theme-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .theme-card.left.animate {
+    animation: slideInLeft 0.6s ease-out forwards;
+    opacity: 1;
+  }
+
+  .theme-card.right.animate {
+    animation: slideInRight 0.6s ease-out forwards;
+    opacity: 1;
+  }
+
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .theme-card.left.animate,
+    .theme-card.right.animate {
+      animation: slideInLeft 0.6s ease-out forwards;
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  function animateThemes() {
+    const cards = document.querySelectorAll('.theme-card[data-animate]');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const card = entry.target;
+            card.classList.add('animate');
+            observer.unobserve(card); 
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    animateThemes();
+  });
+</script>
