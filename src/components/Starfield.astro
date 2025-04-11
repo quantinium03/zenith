@@ -1,6 +1,6 @@
 ---
 ---
-<div class="fixed top-0 left-0 z-[-1]">
+<div class="fixed top-0 left-0 w-full h-full z-[-1]">
     <canvas id="starfield" class="w-full h-full"></canvas>
 </div>
 
@@ -19,7 +19,7 @@
   const starCount = 5000;
   const positions = new Float32Array(starCount * 3);
   for (let i = 0; i < starCount * 3; i++) {
-    positions[i] = (Math.random() - 0.5) * 5000; // Random positions in a large cube
+      positions[i] = (Math.random() - 0.5) * 5000;
   }
   starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
   const starMaterial = new THREE.PointsMaterial({
