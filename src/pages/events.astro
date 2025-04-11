@@ -1,0 +1,12 @@
+---
+import "../styles/global.css";
+import Layout from '../layouts/Layout.astro';
+import Navbar from "../components/Navbar.astro";
+import EventTimeline from "../components/EventTimeline.astro";
+---
+<Layout>
+  <div class="relative bg-cover bg-center h-screen" style="background-image: url('/gallery-bg.jpg')">
+    <Navbar />
+    <EventTimeline />
+  </div>
+</Layout>
