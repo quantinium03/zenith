@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css"
 import Layout from '../layouts/Layout.astro';
-import Navbar from "../components/Navbar.astro";
 import Hero from "../components/Hero.astro";
 import FAQ from "../components/FAQ.astro";
 import Timer from "../components/Timer.astro"
@@ -12,13 +11,14 @@ import Footer from "../components/Footer.astro"
 ---
 
 <Layout>
-    <div class="">
+    <div class="relative">
       <Hero />
       <Timer />
       <Theme />
       <EventTimeline />
       <Sponsors />
       <FAQ />
+      <Footer />
     </div>
 </Layout>
 
