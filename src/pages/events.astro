@@ -3,10 +3,11 @@ import "../styles/global.css";
 import Layout from '../layouts/Layout.astro';
 import Navbar from "../components/Navbar.astro";
 import EventTimeline from "../components/EventTimeline.astro";
+import Footer from "../components/Footer.astro";
 ---
 <Layout>
-  <div class="relative bg-cover bg-center h-screen" style="background-image: url('/gallery-bg.jpg')">
-    <Navbar />
+  <div class="bg-cover bg-center h-screen" style="background-image: url('/gallery-bg.jpg')">
     <EventTimeline />
+    <Footer />
   </div>
 </Layout>

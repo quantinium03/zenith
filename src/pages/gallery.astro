@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
 import Layout from '../layouts/Layout.astro';
-import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
 const images = [
   { src: "/events/1.jpeg", alt: "Nebula 1" },
   { src: "/events/2.jpeg", alt: "Nebula 2" },
@@ -12,8 +12,7 @@ const images = [
 ];
 ---
 <Layout>
-  <div class="relative bg-cover bg-center h-screen" style="background-image: url('/gallery-bg.jpg')">
-    <Navbar />
+  <div class="relative bg-cover bg-center h-screen mb-12" style="background-image: url('/gallery-bg.jpg')">
     <div class="flex flex-col items-center pt-24 md:pt-32">
       <div class="text-white text-center mb-12">
         <h1 class="text-4xl md:text-6xl font-bold">GALLERY</h1>
@@ -28,4 +27,5 @@ const images = [
       </div>
     </div>
   </div>
+  <Footer />
 </Layout>
