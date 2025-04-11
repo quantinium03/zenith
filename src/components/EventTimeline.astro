@@ -32,7 +32,6 @@ const { events = [
     width: 100%;
   }
   
-  /* Vertical line */
   .timeline:after {
     content: '';
     position: absolute;
@@ -151,7 +150,6 @@ const { events = [
 </style>
 
 <script>
-  // Handle rocket positioning
   function updateRocketPosition() {
     const rocket = document.getElementById('rocket');
     const timeline = document.getElementById('timeline');
@@ -160,40 +158,30 @@ const { events = [
     
     const timelineRect = timeline.getBoundingClientRect();
     
-    // Calculate the visible portion of the timeline
     const timelineTop = timelineRect.top;
     const timelineHeight = timelineRect.height;
     const windowHeight = window.innerHeight;
     
-    // If timeline is visible
     if (timelineTop < windowHeight && timelineTop + timelineHeight > 0) {
-      // Calculate the progress based on how much of the timeline is visible
       const visibleStart = Math.max(0, -timelineTop);
       const visibleEnd = Math.min(timelineHeight, windowHeight - timelineTop);
       const visibleHeight = visibleEnd - visibleStart;
       
-      // Calculate where in the timeline the rocket should be 
-      // (offset from the top of the timeline)
       const rocketPosition = visibleStart + (visibleHeight * 0.5);
       
-      // Make sure the rocket stays within the timeline
       const constrainedPosition = Math.max(
         0, 
         Math.min(rocketPosition, timelineHeight - 50)
       );
       
-      // Set the rocket position
       rocket.style.top = `${constrainedPosition}px`;
     }
   }
   
-  // Initialize after page loads
   document.addEventListener('DOMContentLoaded', () => {
-    // Update rocket position on scroll and on page load
     window.addEventListener('scroll', updateRocketPosition);
     window.addEventListener('resize', updateRocketPosition);
     
-    // Initial position update
     updateRocketPosition();
   });
 </script>
