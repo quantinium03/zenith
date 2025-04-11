@@ -1,18 +1,22 @@
-<div class="min-h-screen w-full flex flex-col pt-[15vh] lg:pt-[20vh] items-center bg-inherit gap-8 px-4">
-  <div class="flex flex-col items-center">
-    <h1 class="text-8xl lg:text-[140px] font-bold">Zenith</h1>
-  </div>
+---
+import EarthCanvas from "./EarthCanvas.astro";
+---
+<div class="min-h-screen w-full relative overflow-hidden">
 
-  <div class="flex flex-col items-center text-center">
-    <h1 class="text-2xl font-bold">AWAITS YOU</h1>
-    <h1 class="text-3xl font-bold mt-2">21 APRIL - 26 APRIL</h1>
-    <h1 class="text-xl font-bold pt-6 md:pt-12">Register Now with DevFolio</h1>
-    <button onclick="window.location.href='/register'" class="mt-4 md:mt-6 px-4 py-2 sm:px-6 sm:py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition text-sm md:text-base">
-      DEVFOLIO
-    </button>
-  </div>
-
-  <div class="flex flex-col items-center">
-    <h1 class="text-6xl font-bold my-4 md:my-8 w-full text-center">HACK IN, GEEK OUT</h1>
+  <div class="flex flex-col pt-[15vh] lg:pt-[20vh] items-center bg-inherit gap-8 px-4 relative z-10">
+    <div class="flex flex-col items-center">
+      <h1 class="text-8xl lg:text-[140px] font-bold">Zenith</h1>
+    </div>
+    <div class="flex flex-col items-center text-center">
+      <h1 class="text-2xl font-bold">AWAITS YOU</h1>
+      <h1 class="text-3xl font-bold mt-2">21 APRIL - 26 APRIL</h1>
+      <h1 class="text-xl font-bold pt-6 md:pt-12">Register Now with DevFolio</h1>
+      <button onclick="window.location.href='/register'" class="mt-4 md:mt-6 px-4 py-2 sm:px-6 sm:py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition text-sm md:text-base">
+        DEVFOLIO
+      </button>
+    </div>
+    <div class="flex flex-col items-center">
+      <h1 class="text-6xl font-bold my-4 md:my-8 w-full text-center">HACK IN, GEEK OUT</h1>
+    </div>
   </div>
 </div>
