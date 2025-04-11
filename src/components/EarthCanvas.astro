@@ -2,16 +2,19 @@
   <canvas id="solar-canvas"></canvas>
 </div>
 
-<script type="module">
-import * as THREE from 'https://unpkg.com/three@0.153.0/build/three.module.js';
+<script>
+import * as THREE from 'three';
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('solar-canvas');
-  if (!canvas) return;
+  if (!canvas) {
+    console.error('Canvas not found!');
+    return;
+  }
 
   const container = canvas.parentElement;
-  const width = container.clientWidth;
-  const height = container.clientHeight;
+  let width = container.clientWidth;
+  let height = container.clientHeight;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
@@ -23,20 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
   renderer.setSize(width, height);
 
   const textureLoader = new THREE.TextureLoader();
+  const textureURLBase = '/'; // Adjust this path to your texture location
 
-  // Earth setup
   const earthGroup = new THREE.Group();
   const earthGeometry = new THREE.SphereGeometry(0.8, 64, 64);
   const earthMaterial = new THREE.MeshPhongMaterial({
-    map: textureLoader.load('/earth.jpg'),
+    map: textureLoader.load(`${textureURLBase}earth.jpg`),
     shininess: 10
   });
+
   const earth = new THREE.Mesh(earthGeometry, earthMaterial);
   earthGroup.add(earth);
 
   const cloudGeometry = new THREE.SphereGeometry(0.82, 64, 64);
   const cloudMaterial = new THREE.MeshPhongMaterial({
-    map: textureLoader.load('/clouds.jpg'),
+    map: textureLoader.load(`${textureURLBase}clouds.jpg`),
     transparent: true,
     opacity: 0.5
   });
@@ -54,11 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
   earthGroup.add(atmosphere);
   scene.add(earthGroup);
 
-  // Mars setup
   const marsGroup = new THREE.Group();
   const marsGeometry = new THREE.SphereGeometry(0.5, 64, 64);
   const marsMaterial = new THREE.MeshPhongMaterial({
-    map: textureLoader.load('/mars.jpg'),
+    map: textureLoader.load(`${textureURLBase}mars.jpg`),
     shininess: 5
   });
   const mars = new THREE.Mesh(marsGeometry, marsMaterial);
@@ -75,11 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
   marsGroup.add(marsAtmosphere);
   scene.add(marsGroup);
 
-  // Venus setup
   const venusGroup = new THREE.Group();
   const venusGeometry = new THREE.SphereGeometry(0.75, 64, 64);
   const venusMaterial = new THREE.MeshPhongMaterial({
-    map: textureLoader.load('/venus.jpg'),
+    map: textureLoader.load(`${textureURLBase}venus.jpg`),
     shininess: 8
   });
   const venus = new THREE.Mesh(venusGeometry, venusMaterial);
@@ -100,103 +102,126 @@ document.addEventListener('DOMContentLoaded', () => {
   const mercuryGroup = new THREE.Group();
   const mercuryGeometry = new THREE.SphereGeometry(0.3, 64, 64);
   const mercuryMaterial = new THREE.MeshPhongMaterial({
-    map: textureLoader.load('/mercury.jpg'),
+    map: textureLoader.load(`${textureURLBase}mercury.jpg`),
     shininess: 5
   });
   const mercury = new THREE.Mesh(mercuryGeometry, mercuryMaterial);
   mercuryGroup.add(mercury);
   scene.add(mercuryGroup);
 
-  // Sun setup (fixed distortion)
+  // Sun setup
   const sunGroup = new THREE.Group();
   const sunGeometry = new THREE.SphereGeometry(2, 64, 64);
   const sunMaterial = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/sun.jpg'),
-    // Removed emissive properties to avoid distortion
+    map: textureLoader.load(`${textureURLBase}sun.jpg`)
   });
   const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
   sunGroup.add(sunMesh);
-  sunGroup.position.set(-15, 8, 0);
   scene.add(sunGroup);
 
-  // Lighting
   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-  directionalLight.position.set(-15, 8, 0).normalize();
+  directionalLight.position.set(-15, 8, 0);
   scene.add(directionalLight);
 
   const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
   scene.add(ambientLight);
 
-  camera.position.z = 12;
+  function getOrbitConfig() {
+    const isMobile = window.innerWidth < 768;
+    const scale = isMobile ? 0.6 : 1;
+    
+    return {
+      mars: { 
+        a: 10 * scale, 
+        b: 3 * scale, 
+        angle: Math.PI / 6, 
+        phase: 0.5, 
+        offsetX: isMobile ? 1.5 * scale : 3 * scale, 
+        offsetY: isMobile ? -8 * scale : -4 * scale 
+      },
+      earth: { 
+        a: 8 * scale, 
+        b: 3 * scale, 
+        angle: Math.PI / 6, 
+        phase: 0, 
+        offsetX: isMobile ? 1 * scale : 1 * scale, 
+        offsetY: isMobile ? -2 : 0, 
+      },
+      venus: { 
+        a: 5 * scale, 
+        b: 2 * scale, 
+        angle: Math.PI / 6, 
+        phase: 0.3, 
+        offsetX: isMobile ? -2.5 * scale : -5 * scale, 
+        offsetY: isMobile ? 3 * scale : 3 * scale 
+      },
+      mercury: { 
+        a: 4 * scale, 
+        b: 1 * scale, 
+        angle: Math.PI / 6, 
+        phase: 1, 
+        offsetX: isMobile ? -2 * scale : -10 * scale, 
+        offsetY: isMobile ? 8 * scale : 6 * scale 
+      }
+    };
+  }
+
+  earth.rotation.x = THREE.MathUtils.degToRad(23.5);
+  mars.rotation.x = THREE.MathUtils.degToRad(25.2);
+  venus.rotation.x = THREE.MathUtils.degToRad(177.4);
+  mercury.rotation.x = THREE.MathUtils.degToRad(0.03);
+
+  function updateCameraPosition() {
+    const isMobile = window.innerWidth < 768;
+    camera.position.z = isMobile ? 15 : 12;
+    camera.updateProjectionMatrix();
+  }
+  
+  updateCameraPosition();
 
   let time = 0;
 
-  // Orbital parameters
-  const earthA = 8;
-  const earthB = 3;
-  const earthAngle = Math.PI / 6;
-  const earthOffset = 1;
+  function updateSunPosition() {
+    const aspect = width / height;
+    const vFov = THREE.MathUtils.degToRad(camera.fov);
+    const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
 
-  const marsA = 10;
-  const marsB = 3;
-  const marsAngle = Math.PI / 6;
-  const marsPhase = 0.5;
+    const top = Math.tan(vFov / 2) * camera.position.z;
+    const left = -Math.tan(hFov / 2) * camera.position.z;
 
-  const venusA = 6;
-  const venusB = 2;
-  const venusAngle = Math.PI / 6;
-  const venusPhase = 0.3;
-
-  const mercuryA = 4;
-  const mercuryB = 1.5;
-  const mercuryAngle = Math.PI / 6;
-  const mercuryPhase = 0.2;
-
-  // Axial tilts
-  earth.rotation.x = THREE.MathUtils.degToRad(23.5);
-  mars.rotation.x = THREE.MathUtils.degToRad(25.2);
-  venus.rotation.x = THREE.MathUtils.degToRad(177.4); // Venus has retrograde rotation
-  mercury.rotation.x = THREE.MathUtils.degToRad(0.03);
+    // Adjust sun position based on screen size
+    const isMobile = window.innerWidth < 768;
+    const sunX = isMobile ? left + 1 : left + 2;
+    const sunY = isMobile ? top - 1 : top - 2;
+    
+    sunGroup.position.set(sunX, sunY, 0);
+    directionalLight.position.set(sunX, sunY, 0);
+  }
 
   function animate() {
     requestAnimationFrame(animate);
-
     time += 0.005;
 
-    // Earth orbit
-    const earthRawX = earthA * Math.cos(time);
-    const earthRawY = earthB * Math.sin(time);
-    const earthX = earthRawX * Math.cos(earthAngle) - earthRawY * Math.sin(earthAngle) + 1;
-    const earthY = earthRawY * Math.cos(earthAngle) + earthRawX * Math.sin(earthAngle);
-    earthGroup.position.set(earthX, earthY, 0);
+    const orbits = getOrbitConfig();
 
-    // Mars orbit
-    const marsRawX = marsA * Math.cos(time * 0.7 + marsPhase);
-    const marsRawY = marsB * Math.sin(time * 0.7 + marsPhase);
-    const marsX = marsRawX * Math.cos(marsAngle) - marsRawY * Math.sin(marsAngle) + 3;
-    const marsY = marsRawY * Math.cos(marsAngle) + marsRawX * Math.sin(marsAngle) - 4;
-    marsGroup.position.set(marsX, marsY, 0);
+    function updateOrbit(group, params, speed) {
+      const rawX = params.a * Math.cos(time * speed + params.phase);
+      const rawY = params.b * Math.sin(time * speed + params.phase);
+      const x = rawX * Math.cos(params.angle) - rawY * Math.sin(params.angle) + params.offsetX;
+      const y = rawY * Math.cos(params.angle) + rawX * Math.sin(params.angle) + params.offsetY;
+      group.position.set(x, y, 0);
+    }
 
-    // Venus orbit
-    const venusRawX = venusA * Math.cos(time * 1.2 + venusPhase);
-    const venusRawY = venusB * Math.sin(time * 1.2 + venusPhase);
-    const venusX = venusRawX * Math.cos(venusAngle) - venusRawY * Math.sin(venusAngle) - 5;
-    const venusY = venusRawY * Math.cos(venusAngle) + venusRawX * Math.sin(venusAngle) + 3;
-    venusGroup.position.set(venusX, venusY, 0);
+    updateOrbit(earthGroup, orbits.earth, 1);
+    updateOrbit(marsGroup, orbits.mars, 0.7);
+    updateOrbit(venusGroup, orbits.venus, 1.2);
+    updateOrbit(mercuryGroup, orbits.mercury, 1.5);
 
-    // Mercury orbit
-    const mercuryRawX = mercuryA * Math.cos(time * 1.5 + mercuryPhase);
-    const mercuryRawY = mercuryB * Math.sin(time * 1.5 + mercuryPhase);
-    const mercuryX = mercuryRawX * Math.cos(mercuryAngle) - mercuryRawY * Math.sin(mercuryAngle) - 10 ;
-    const mercuryY = mercuryRawY * Math.cos(mercuryAngle) + mercuryRawX * Math.sin(mercuryAngle) + 6
-    mercuryGroup.position.set(mercuryX, mercuryY, 0);
-
-    // Rotations
     earth.rotation.y += 0.01;
     clouds.rotation.y += 0.0115;
     mars.rotation.y += 0.0097;
-    venus.rotation.y += 0.0004; // Slow rotation due to Venus's long day
-    mercury.rotation.y += 0.0017; // Mercury's slow rotation
+    venus.rotation.y += 0.0004;
+    mercury.rotation.y += 0.0017;
     sunMesh.rotation.z += 0.003;
     sunMesh.rotation.y += 0.003;
 
@@ -204,15 +229,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function onResize() {
-    const newWidth = container.clientWidth;
-    const newHeight = container.clientHeight;
-    camera.aspect = newWidth / newHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(newWidth, newHeight);
+    width = container.clientWidth;
+    height = container.clientHeight;
+    camera.aspect = width / height;
+    updateCameraPosition();
+    renderer.setSize(width, height);
+    updateSunPosition();
   }
 
   window.addEventListener('resize', onResize);
-
+  updateSunPosition();
   animate();
 });
 </script>
@@ -223,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
 }
 #solar-canvas {
