@@ -27,102 +27,114 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const textureLoader = new THREE.TextureLoader();
 
+  // Earth - Increased shininess and added emissive properties
   const earthGroup = new THREE.Group();
   const earthGeometry = new THREE.SphereGeometry(0.8, 64, 64);
   const earthMaterial = new THREE.MeshPhongMaterial({
-      map: textureLoader.load(`/earth.jpg`),
-    shininess: 10
+    map: textureLoader.load(`/earth.jpg`),
+    shininess: 25,
+    emissive: 0x112233,
+    emissiveIntensity: 0.2
   });
 
   const earth = new THREE.Mesh(earthGeometry, earthMaterial);
   earthGroup.add(earth);
 
+  // Clouds - Increased opacity for better visibility
   const cloudGeometry = new THREE.SphereGeometry(0.82, 64, 64);
   const cloudMaterial = new THREE.MeshPhongMaterial({
-      map: textureLoader.load(`/clouds.jpg`),
+    map: textureLoader.load(`/clouds.jpg`),
     transparent: true,
-    opacity: 0.5
+    opacity: 0.6
   });
   const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
   earthGroup.add(clouds);
 
+  // Atmosphere - Made slightly more visible
   const atmosphereGeometry = new THREE.SphereGeometry(0.9, 64, 64);
   const atmosphereMaterial = new THREE.MeshPhongMaterial({
     color: 0xADD8FF,
     transparent: true,
-    opacity: 0.1,
+    opacity: 0.15,
     side: THREE.BackSide
   });
   const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
   earthGroup.add(atmosphere);
   scene.add(earthGroup);
 
+  // Mars - Increased shininess and added emissive properties
   const marsGroup = new THREE.Group();
   const marsGeometry = new THREE.SphereGeometry(0.5, 64, 64);
   const marsMaterial = new THREE.MeshPhongMaterial({
-      map: textureLoader.load(`/mars.jpg`),
-    shininess: 5
+    map: textureLoader.load(`/mars.jpg`),
+    shininess: 15,
+    emissive: 0x441100,
+    emissiveIntensity: 0.2
   });
   const mars = new THREE.Mesh(marsGeometry, marsMaterial);
   marsGroup.add(mars);
 
+  // Mars atmosphere - Made slightly more visible
   const marsAtmosphereGeometry = new THREE.SphereGeometry(0.53, 64, 64);
   const marsAtmosphereMaterial = new THREE.MeshPhongMaterial({
     color: 0xEE8D70,
     transparent: true,
-    opacity: 0.05,
+    opacity: 0.08,
     side: THREE.BackSide
   });
   const marsAtmosphere = new THREE.Mesh(marsAtmosphereGeometry, marsAtmosphereMaterial);
   marsGroup.add(marsAtmosphere);
   scene.add(marsGroup);
 
+  // Venus - Increased shininess and added emissive properties
   const venusGroup = new THREE.Group();
   const venusGeometry = new THREE.SphereGeometry(0.75, 64, 64);
   const venusMaterial = new THREE.MeshPhongMaterial({
-      map: textureLoader.load(`/venus.jpg`),
-    shininess: 8
+    map: textureLoader.load(`/venus.jpg`),
+    shininess: 20,
+    emissive: 0x332211,
+    emissiveIntensity: 0.2
   });
   const venus = new THREE.Mesh(venusGeometry, venusMaterial);
   venusGroup.add(venus);
 
+  // Venus atmosphere - Made more visible
   const venusAtmosphereGeometry = new THREE.SphereGeometry(0.78, 64, 64);
   const venusAtmosphereMaterial = new THREE.MeshPhongMaterial({
     color: 0xFFD700,
     transparent: true,
-    opacity: 0.15,
+    opacity: 0.2,
     side: THREE.BackSide
   });
   const venusAtmosphere = new THREE.Mesh(venusAtmosphereGeometry, venusAtmosphereMaterial);
   venusGroup.add(venusAtmosphere);
   scene.add(venusGroup);
 
+  // Mercury - Increased shininess and added emissive properties
   const mercuryGroup = new THREE.Group();
   const mercuryGeometry = new THREE.SphereGeometry(0.3, 64, 64);
   const mercuryMaterial = new THREE.MeshPhongMaterial({
-      map: textureLoader.load(`/mercury.jpg`),
-    shininess: 5
+    map: textureLoader.load(`/mercury.jpg`),
+    shininess: 15,
+    emissive: 0x221100,
+    emissiveIntensity: 0.15
   });
   const mercury = new THREE.Mesh(mercuryGeometry, mercuryMaterial);
   mercuryGroup.add(mercury);
   scene.add(mercuryGroup);
 
-  const sunGroup = new THREE.Group();
-  const sunGeometry = new THREE.SphereGeometry(2, 64, 64);
-  const sunMaterial = new THREE.MeshBasicMaterial({
-      map: textureLoader.load(`/sun.jpg`),
-      shininess: 5,
-  });
-
-  const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
-  sunGroup.add(sunMesh);
-  scene.add(sunGroup);
-
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+  // Increased directional light intensity
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
   directionalLight.position.set(-15, 8, 0);
   scene.add(directionalLight);
 
-  const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
+  // Added a second directional light for better illumination
+  const secondaryLight = new THREE.DirectionalLight(0xffffee, 0.5);
+  secondaryLight.position.set(15, -8, 10);
+  scene.add(secondaryLight);
+
+  // Increased ambient light intensity
+  const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
   scene.add(ambientLight);
 
   function getOrbitConfig() {
@@ -180,22 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let time = 0;
 
-  function updateSunPosition() {
-    const aspect = width / height;
-    const vFov = THREE.MathUtils.degToRad(camera.fov);
-    const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
-
-    const top = Math.tan(vFov / 2) * camera.position.z;
-    const left = -Math.tan(hFov / 2) * camera.position.z;
-
-    const isMobile = window.innerWidth < 768;
-    const sunX = isMobile ? left + 1 : left + 2;
-    const sunY = isMobile ? top - 1 : top - 2;
-    
-    sunGroup.position.set(sunX, sunY, 0);
-    directionalLight.position.set(sunX, sunY, 0);
-  }
-
   function animate() {
     requestAnimationFrame(animate);
     time += 0.005;
@@ -220,8 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     mars.rotation.y += 0.0097;
     venus.rotation.y += 0.0004;
     mercury.rotation.y += 0.0017;
-    sunMesh.rotation.z += 0.003;
-    sunMesh.rotation.y += 0.003;
 
     renderer.render(scene, camera);
   }
@@ -232,11 +226,9 @@ document.addEventListener('DOMContentLoaded', () => {
     camera.aspect = width / height;
     updateCameraPosition();
     renderer.setSize(width, height);
-    updateSunPosition();
   }
 
   window.addEventListener('resize', onResize);
-  updateSunPosition();
   animate();
 });
 </script>
