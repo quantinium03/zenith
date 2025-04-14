@@ -123,17 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
   mercuryGroup.add(mercury);
   scene.add(mercuryGroup);
 
-  // Increased directional light intensity
   const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
   directionalLight.position.set(-15, 8, 0);
   scene.add(directionalLight);
 
-  // Added a second directional light for better illumination
-  const secondaryLight = new THREE.DirectionalLight(0xffffee, 0.5);
+  const secondaryLight = new THREE.DirectionalLight(0x121212, 0.5);
   secondaryLight.position.set(15, -8, 10);
   scene.add(secondaryLight);
 
-  // Increased ambient light intensity
   const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
   scene.add(ambientLight);
 
