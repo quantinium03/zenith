@@ -1,16 +1,16 @@
 ---
 const { events = [
-  { time: "9:30AM", title: "Onboarding"},
-  { time: "10:00AM", title: "Orientation" },
-  { time: "11:30AM", title: "Escorting to Hackathon Hall" },
-  { time: "12:00PM", title: "Setting Up" },
-  { time: "2:00PM", title: "Lunch" },
-  { time: "6:00PM", title: "Mentoring Round" },
-  { time: "9:00PM", title: "Dinner" },
-  { time: "1:00AM", title: "Midnight Snack" },
-  { time: "7:00AM", title: "Breakfast" },
-  { time: "10:00AM", title: "Judging" },
-  { time: "1:30PM", title: "Closing and Crowing Ceremony" },
+  { time: "9:30AM", date: "25 April", title: "Onboarding"},
+  { time: "10:00AM", date: "25 April", title: "Orientation" },
+  { time: "11:30AM", date: "25 April", title: "Escorting to Hackathon Hall" },
+  { time: "12:00PM", date: "25 April", title: "Setting Up" },
+  { time: "2:00PM", date: "25 April", title: "Lunch" },
+  { time: "6:00PM", date: "25 April", title: "Mentoring Round" },
+  { time: "9:00PM", date: "25 April", title: "Dinner" },
+  { time: "1:00AM", date: "26 April", title: "Midnight Snack" },
+  { time: "7:00AM", date: "26 April", title: "Breakfast" },
+  { time: "10:00AM", date: "26 April", title: "Judging" },
+  { time: "1:30PM", date: "26 April", title: "Closing and Crowing Ceremony" },
 ] } = Astro.props;
 ---
 
@@ -24,7 +24,7 @@ const { events = [
     {events.map((event, index) => (
       <div class={`event ${index % 2 === 0 ? 'left' : 'right'}`} data-animate>
         <div class="event-content">
-          <div class="event-time">{event.time}</div>
+            <div class="event-time">{event.time} | {event.date}</div>
           <h3>{event.title}</h3>
           <p>{event.description}</p>
         </div>
