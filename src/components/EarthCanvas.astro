@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const earth = new THREE.Mesh(earthGeometry, earthMaterial);
   earthGroup.add(earth);
 
-  // Clouds - Increased opacity for better visibility
   const cloudGeometry = new THREE.SphereGeometry(0.82, 64, 64);
   const cloudMaterial = new THREE.MeshPhongMaterial({
     map: textureLoader.load(`/clouds.jpg`),
@@ -50,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
   earthGroup.add(clouds);
 
-  // Atmosphere - Made slightly more visible
   const atmosphereGeometry = new THREE.SphereGeometry(0.9, 64, 64);
   const atmosphereMaterial = new THREE.MeshPhongMaterial({
     color: 0xADD8FF,
@@ -62,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
   earthGroup.add(atmosphere);
   scene.add(earthGroup);
 
-  // Mars - Increased shininess and added emissive properties
   const marsGroup = new THREE.Group();
   const marsGeometry = new THREE.SphereGeometry(0.5, 64, 64);
   const marsMaterial = new THREE.MeshPhongMaterial({
@@ -74,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const mars = new THREE.Mesh(marsGeometry, marsMaterial);
   marsGroup.add(mars);
 
-  // Mars atmosphere - Made slightly more visible
   const marsAtmosphereGeometry = new THREE.SphereGeometry(0.53, 64, 64);
   const marsAtmosphereMaterial = new THREE.MeshPhongMaterial({
     color: 0xEE8D70,
@@ -86,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
   marsGroup.add(marsAtmosphere);
   scene.add(marsGroup);
 
-  // Venus - Increased shininess and added emissive properties
   const venusGroup = new THREE.Group();
   const venusGeometry = new THREE.SphereGeometry(0.75, 64, 64);
   const venusMaterial = new THREE.MeshPhongMaterial({
@@ -98,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const venus = new THREE.Mesh(venusGeometry, venusMaterial);
   venusGroup.add(venus);
 
-  // Venus atmosphere - Made more visible
   const venusAtmosphereGeometry = new THREE.SphereGeometry(0.78, 64, 64);
   const venusAtmosphereMaterial = new THREE.MeshPhongMaterial({
     color: 0xFFD700,
@@ -110,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
   venusGroup.add(venusAtmosphere);
   scene.add(venusGroup);
 
-  // Mercury - Increased shininess and added emissive properties
   const mercuryGroup = new THREE.Group();
   const mercuryGeometry = new THREE.SphereGeometry(0.3, 64, 64);
   const mercuryMaterial = new THREE.MeshPhongMaterial({
