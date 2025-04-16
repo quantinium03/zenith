@@ -2,22 +2,22 @@
 import "../styles/global.css";
 import Layout from '../layouts/Layout.astro';
 import Footer from "../components/Footer.astro";
+
 const images = [
   { src: "/events/1.jpeg", alt: "Nebula 1" },
   { src: "/events/2.jpeg", alt: "Nebula 2" },
   { src: "/events/3.jpeg", alt: "Nebula 3" },
-  { src: "/events/4.jpeg", alt: "Nebula 1" },
-  { src: "/events/5.jpeg", alt: "Nebula 2" },
-  { src: "/events/6.jpeg", alt: "Nebula 3" },
+  { src: "/events/4.jpeg", alt: "Nebula 4" },
+  { src: "/events/5.jpeg", alt: "Nebula 5" },
+  { src: "/events/6.jpeg", alt: "Nebula 6" },
 ];
 ---
+
 <Layout>
-  <div class="relative bg-cover bg-center h-screen mb-12">
-    <div class="flex flex-col items-center pt-24 md:pt-32">
-      <div class="text-white text-center mb-12">
-        <h1 class="text-4xl md:text-6xl font-bold">GALLERY</h1>
-      </div>
-      
+  <div class="bg-cover bg-center py-12">
+    <div class="flex flex-col items-center">
+      <h1 class="text-3xl lg:text-4xl font-bold underline text-white text-center mb-12">GALLERY</h1>
+
       <div class="container mx-auto px-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {images.map((image) => (
@@ -27,5 +27,6 @@ const images = [
       </div>
     </div>
   </div>
+
   <Footer />
 </Layout>
