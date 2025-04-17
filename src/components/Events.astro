@@ -6,9 +6,9 @@
     </div>
 
     <div class="flex w-[90vw] mx-auto overflow-x-auto md:overflow-x-hidden snap-x snap-mandatory scrollbar-hide">
-        <div class="panel transition-all duration-700 ease-in bg-cover bg-center bg-no-repeat min-h-[50vh] h-fit text-white cursor-pointer flex-[0.5] md:flex-[0.5] max-w-[85vw] sm:max-w-[70vw] m-[10px] relative active border border-zinc-600 shadow-xl rounded-lg overflow-hidden" style="background-image: url('/events/hackathon.jpeg');">
+        <div class="panel transition-all duration-700 ease-in bg-cover bg-center bg-no-repeat text-white cursor-pointer flex-[0.5] md:flex-[0.5] max-w-[85vw] sm:max-w-[70vw] m-[10px] relative active border border-zinc-600 shadow-xl rounded-lg overflow-hidden" style="background-image: url('/events/hackathon.jpeg');">
             <div class="absolute inset-0 bg-black/50 z-0"></div>
-            <div class="relative flex flex-col w-full p-5 z-10">
+            <div class="panel-content relative flex flex-col w-full p-5 z-10">
                 <div class="text-center mb-4 md:mb-6">
                     <h3 class="text-shadow text-2xl md:text-4xl m-0 font-bold">
                         ZENITH 4.0
@@ -29,9 +29,9 @@
             </div>
         </div>
 
-        <div class="panel transition-all duration-700 ease-in bg-cover bg-center bg-no-repeat min-h-[50vh] h-fit text-white cursor-pointer flex-[0.5] md:flex-[0.5] max-w-[85vw] m-[10px] relative border border-zinc-600 shadow-xl rounded-lg overflow-hidden" style="background-image: url('https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2023/02/rust-code-that-interacts-with-files-1.jpg?q=50&fit=crop&w=1140&h=&dpr=1.5');">
+        <div class="panel transition-all duration-700 ease-in bg-cover bg-center bg-no-repeat text-white cursor-pointer flex-[0.5] md:flex-[0.5] max-w-[85vw] m-[10px] relative border border-zinc-600 shadow-xl rounded-lg overflow-hidden" style="background-image: url('https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2023/02/rust-code-that-interacts-with-files-1.jpg?q=50&fit=crop&w=1140&h=&dpr=1.5');">
             <div class="absolute inset-0 bg-black/50 z-0"></div>
-            <div class="relative flex flex-col w-full p-5 z-10">
+            <div class="panel-content relative flex flex-col w-full p-5 z-10">
                 <div class="text-center mb-4 md:mb-6">
                     <h3 class="text-shadow text-2xl md:text-4xl m-0 font-bold">
                         CODE CADET XVI
@@ -48,9 +48,9 @@
                 </div>
             </div>
         </div>
-        <div class="panel transition-all duration-700 ease-in bg-cover bg-center bg-no-repeat min-h-[50vh] h-fit text-white cursor-pointer flex-[0.5] md:flex-[0.5] max-w-[85vw] m-[10px] relative border border-zinc-600 shadow-xl rounded-lg overflow-hidden" style="background-image: url('/events/tech_and_beyond.jpeg');">
+        <div class="panel transition-all duration-700 ease-in bg-cover bg-center bg-no-repeat text-white cursor-pointer flex-[0.5] md:flex-[0.5] max-w-[85vw] m-[10px] relative border border-zinc-600 shadow-xl rounded-lg overflow-hidden" style="background-image: url('/events/tech_and_beyond.jpeg');">
             <div class="absolute inset-0 bg-black/50 z-0"></div>
-            <div class="relative flex flex-col w-full p-5 z-10">
+            <div class="panel-content relative flex flex-col w-full p-5 z-10">
                 <div class="text-center mb-4 md:mb-6">
                     <h3 class="text-shadow text-2xl md:text-4xl m-0 font-bold">
                         TECH AND BEYOND
@@ -67,9 +67,9 @@
                 </div>
             </div>
         </div>
-        <div class="panel transition-all duration-700 ease-in bg-cover bg-center bg-no-repeat min-h-[50vh] h-fit text-white cursor-pointer flex-[0.5] md:flex-[0.5] max-w-[85vw] m-[10px] relative border border-zinc-600 shadow-xl rounded-lg overflow-hidden" style="background-image: url('/events/xunbao.jpeg');">
+        <div class="panel transition-all duration-700 ease-in bg-cover bg-center bg-no-repeat text-white cursor-pointer flex-[0.5] md:flex-[0.5] max-w-[85vw] m-[10px] relative border border-zinc-600 shadow-xl rounded-lg overflow-hidden" style="background-image: url('/events/xunbao.jpeg');">
             <div class="absolute inset-0 bg-black/50 z-0"></div>
-            <div class="relative flex flex-col w-full p-5 z-10">
+            <div class="panel-content relative flex flex-col w-full p-5 z-10">
                 <div class="text-center mb-4 md:mb-6">
                     <h3 class="text-shadow text-2xl md:text-4xl m-0 font-bold">
                         XUNBAO - ONLINE QUIZ
@@ -99,11 +99,17 @@
         transition: all 0.7s ease-in;
         height: 60vh;
         min-height: 400px;
+        max-height: 60vh; /* Set max height to ensure consistent height */
         display: flex;
         flex-direction: column;
         overflow: hidden;
         background-size: cover;
         background-position: center;
+    }
+    
+    .panel-content {
+        height: 100%;
+        overflow: hidden; /* Hide overflow by default */
     }
     
     .panel p,
@@ -116,7 +122,21 @@
         flex: 5;
         height: 60vh; 
         min-height: 400px;
-        overflow-y: auto; 
+        max-height: 60vh; /* Keep consistent even when active */
+    }
+    
+    .panel.active .panel-content {
+        overflow-y: auto; /* Show scrollbar only in the content */
+    }
+    
+    /* Hide scrollbar for panel content */
+    .panel.active .panel-content::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .panel.active .panel-content {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 
     .panel.active h3,
@@ -141,14 +161,13 @@
     .panel .flex-grow p {
         margin: 0; 
     }
-
 }
 
 @media (max-width: 768px) {
     .panel {
         flex: 1 0 auto;
         scroll-snap-align: center;
-        max-height: none;
+        max-height: 60vh;
     }
     
     .panel h3,
@@ -170,8 +189,20 @@
         -webkit-overflow-scrolling: touch;
         padding-bottom: 10px;
     }
+    
+    .panel-content {
+        overflow-y: auto;
+    }
+    
+    .panel-content::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .panel-content {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 }
-
 
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
