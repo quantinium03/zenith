@@ -5,6 +5,20 @@ const uniqueId = `asteroid-belt-${Math.random().toString(36).substr(2, 9)}`;
     <canvas id={uniqueId} class="asteroid-belt"></canvas>
 </div>
 
+<style>
+    .asteroid-container {
+        height: 5rem;
+        left: 50%;
+        overflow: hidden; /* Hide overflow */
+    }
+
+    .asteroid-belt {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+</style>
+
 <script>
   import * as THREE from 'three';
 
@@ -158,16 +172,3 @@ const uniqueId = `asteroid-belt-${Math.random().toString(36).substr(2, 9)}`;
   });
 </script>
 
-<style>
-  .asteroid-container {
-    height: 5rem;
-    left: 50%;
-    overflow: hidden; /* Hide overflow */
-  }
-  
-  .asteroid-belt {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-</style>

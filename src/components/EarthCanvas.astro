@@ -2,6 +2,22 @@
   <canvas id="solar-canvas"></canvas>
 </div>
 
+<style>
+  .earth-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+  #solar-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>
+
 <script>
 import * as THREE from 'three';
 
@@ -223,18 +239,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<style>
-.earth-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-#solar-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-</style>
