@@ -128,7 +128,6 @@ const { events = [
     font-size: 1rem;
   }
   
-  /* Animation Keyframes */
   .event.left.animate {
     animation: slideInLeft 0.6s ease-out forwards;
     opacity: 1;
@@ -188,7 +187,6 @@ const { events = [
       left: 20px;
     }
     
-    /* Adjust animations for mobile */
     .event.left.animate, .event.right.animate {
       animation: slideInLeft 0.6s ease-out forwards;
       opacity: 1;
@@ -197,7 +195,6 @@ const { events = [
 </style>
 
 <script>
-  // Rocket animation (unchanged)
   function updateRocketPosition() {
     const rocket = document.getElementById('rocket');
     const timeline = document.getElementById('timeline');
@@ -226,7 +223,6 @@ const { events = [
     }
   }
   
-  // Slide-in animation with Intersection Observer
   function animateEvents() {
     const events = document.querySelectorAll('.event[data-animate]');
     
@@ -236,11 +232,11 @@ const { events = [
           if (entry.isIntersecting) {
             const event = entry.target;
             event.classList.add('animate');
-            observer.unobserve(event); // Stop observing once animated
+            observer.unobserve(event);
           }
         });
       },
-      { threshold: 0.2 } // Trigger when 20% of the event is visible
+      { threshold: 0.2 } 
     );
     
     events.forEach((event) => observer.observe(event));

@@ -129,7 +129,6 @@ const faqs = [
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    // Accordion functionality
     const faqItems = document.querySelectorAll('.faq-item');
 
     faqItems.forEach((item) => {
@@ -150,7 +149,6 @@ const faqs = [
       faqItems[0].classList.add('active');
     }
 
-    // Slide-in animation
     const animateFaqs = () => {
       const faqs = document.querySelectorAll('.faq-item[data-animate]');
 
