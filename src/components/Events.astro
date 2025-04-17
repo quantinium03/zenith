@@ -99,7 +99,7 @@
         transition: all 0.7s ease-in;
         height: 60vh;
         min-height: 400px;
-        max-height: 40vh; /* Set max height to ensure consistent height */
+        max-height: 40vh; 
         display: flex;
         flex-direction: column;
         overflow: hidden;
@@ -109,7 +109,7 @@
     
     .panel-content {
         height: 100%;
-        overflow: hidden; /* Hide overflow by default */
+        overflow: hidden;
     }
     
     .panel p,
@@ -118,33 +118,43 @@
         display: none; 
     }
 
-    .panel.active {
+    .panel:hover {
         flex: 5;
         height: 60vh; 
         min-height: 400px;
-        max-height: 40vh; /* Keep consistent even when active */
+        max-height: 40vh;
     }
     
-    .panel.active .panel-content {
-        overflow-y: auto; /* Show scrollbar only in the content */
+    .panel:hover .panel-content {
+        overflow-y: auto;
     }
     
-    /* Hide scrollbar for panel content */
-    .panel.active .panel-content::-webkit-scrollbar {
+    .panel:hover .panel-content::-webkit-scrollbar {
         display: none;
     }
     
-    .panel.active .panel-content {
+    .panel:hover .panel-content {
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
 
+    .panel:hover h3,
+    .panel:hover p,
+    .panel:hover div p {
+        opacity: 1 !important;
+        display: block;
+        transition: opacity 0.3s ease-in 0.4s;
+    }
+
+    .panel.active {
+        flex: 5;
+    }
+    
     .panel.active h3,
     .panel.active p,
     .panel.active div p {
         opacity: 1 !important;
         display: block;
-        transition: opacity 0.3s ease-in 0.4s;
     }
 
     .panel .relative.flex-col {
@@ -212,19 +222,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const panels = document.querySelectorAll('.panel');
     const isMobile = window.innerWidth <= 768;
     
-    // Only apply click handlers on desktop
     if (!isMobile) {
-        panels.forEach(panel => {
-            panel.addEventListener('click', () => {
-                removeActiveClasses();
-                panel.classList.add('active');
-            });
-        });
-        
-        // Set the first panel as active on desktop
         panels[0].classList.add('active');
+        
+        panels.forEach((panel, index) => {
+            if (index > 0) { 
+                panel.addEventListener('mouseenter', () => {
+                    panels[0].classList.remove('active');
+                });
+                
+                panel.addEventListener('mouseleave', () => {
+                    const isHoveringAny = Array.from(panels).some((p, i) => i > 0 && p.matches(':hover'));
+                    if (!isHoveringAny) {
+                        panels[0].classList.add('active');
+                    }
+                });
+            }
+        });
     } else {
-        // On mobile, make all panels visible with content
         panels.forEach(panel => {
             panel.classList.remove('active');
             const contentElements = panel.querySelectorAll('h3, p');
@@ -233,7 +248,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
         
-        // Add pagination indicators for mobile
         const container = document.querySelector('.flex');
         const paginationContainer = document.createElement('div');
         paginationContainer.className = 'pagination flex justify-center mt-4 gap-2';
@@ -247,7 +261,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         container.parentNode.insertBefore(paginationContainer, container.nextSibling);
         
-        // Update pagination on scroll
         container.addEventListener('scroll', function() {
             const scrollPosition = container.scrollLeft;
             const panelWidth = panels[0].offsetWidth;
@@ -266,17 +279,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    function removeActiveClasses() {
-        panels.forEach(panel => {
-            panel.classList.remove('active');
-        });
-    }
-    
-    // Handle resize events
     window.addEventListener('resize', function() {
         const newIsMobile = window.innerWidth <= 768;
         if (newIsMobile !== isMobile) {
-            location.reload(); // Refresh to apply correct layout
+            location.reload();
         }
     });
 });
