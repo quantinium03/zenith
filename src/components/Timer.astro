@@ -1,43 +1,105 @@
-<div class="flex justify-center flex-wrap gap-2 bg-inherit p-4" id="timer">
-    <img src="/meter_tube.png" class="w-8 sm:w-12 md:w-16 lg:w-24 " />
-    <img src="/meter_tube.png" class="w-8 sm:w-12 md:w-16 lg:w-24 " />
-    <img src="/meter_tube.png" class="w-8 sm:w-12 md:w-16 lg:w-24 " />
-    <img src="/meter_tube.png" class="w-8 sm:w-12 md:w-16 lg:w-24 " />
-    <img src="/meter_tube.png" class="w-8 sm:w-12 md:w-16 lg:w-24 " />
-    <img src="/meter_tube.png" class="w-8 sm:w-12 md:w-16 lg:w-24 " />
-    <img src="/meter_tube.png" class="w-8 sm:w-12 md:w-16 lg:w-24 " />
-    <img src="/meter_tube.png" class="w-8 sm:w-12 md:w-16 lg:w-24 " />
+<div class="text-center mt-10">
+  <div class="text-center mb-6">
+    <h1 class="font-bold text-4xl lg:text-6xl underline tracking-tight">Hackathon Event Timeline</h1>
+  </div>
+  <div class="flex justify-center flex-wrap gap-2">
+    <div class="flex flex-col items-center mx-2">
+      <div class="flex gap-1">
+        <img src="/0.png" class="w-6 md:w-16 lg:w-24 timer" id="days-ones" />
+      </div>
+    </div>
+    
+    <div class="flex items-center text-4xl font-bold text-white">:</div>
+    
+    <div class="flex flex-col items-center mx-2">
+      <div class="flex gap-1">
+        <img src="/0.png" class="w-6 md:w-16 lg:w-24 timer" id="hours-tens" />
+        <img src="/0.png" class="w-6 md:w-16 lg:w-24" id="hours-ones" />
+      </div>
+    </div>
+    
+    <div class="flex items-center text-4xl font-bold text-white">:</div>
+    
+    <div class="flex flex-col items-center mx-2">
+      <div class="flex gap-1">
+        <img src="/0.png" class="w-6 md:w-16 lg:w-24 timer" id="minutes-tens" />
+        <img src="/0.png" class="w-6 md:w-16 lg:w-24 timer" id="minutes-ones" />
+      </div>
+    </div>
+    
+    <div class="flex items-center text-4xl font-bold text-white">:</div>
+    
+    <div class="flex flex-col items-center mx-2">
+      <div class="flex gap-1">
+        <img src="/0.png" class="w-6 md:w-16 lg:w-24 timer" id="seconds-tens" />
+        <img src="/0.png" class="w-6 md:w-16 lg:w-24 timer" id="seconds-ones" />
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-function padNumber(num) {
+  function padNumber(num) {
     return num <= 9 ? "0" + num : "" + num;
-}
+  }
 
-window.onload = function () {
-    var tubeDiv = document.getElementById('timer');
-    var tubes = tubeDiv.getElementsByTagName('img');
-
-    function loadingAnimation() {
-        for (var i = 0; i < tubes.length; i++) {
-            tubes[i].src = i % 2 === 0 ? '/11.gif' : '/12.gif';
-        }
+  function updateCountdown() {
+    const targetDate = new Date('April 23, 2025 00:00:00').getTime();
+    const now = new Date().getTime();
+    const difference = targetDate - now;
+    
+    if (difference <= 0) {
+      document.getElementById('days-ones').src = "/0.png";
+      document.getElementById('hours-tens').src = "/0.png";
+      document.getElementById('hours-ones').src = "/0.png";
+      document.getElementById('minutes-tens').src = "/0.png";
+      document.getElementById('minutes-ones').src = "/0.png";
+      document.getElementById('seconds-tens').src = "/0.png";
+      document.getElementById('seconds-ones').src = "/0.png";
+      
+      document.querySelector('h2').textContent = "The Date Has Arrived!";
+      return;
     }
-
-    function updateTime() {
-        var date = new Date();
-        var timeStr = padNumber(date.getHours()) + "p" + padNumber(date.getMinutes()) + "p" + padNumber(date.getSeconds());
-        
-        for (var i = 0; i < tubes.length; i++) {
-            tubes[i].src = `/${timeStr[i]}.png`;
-        }
+    
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+    
+    let daysStr = padNumber(days);
+    if (days > 99) {
+      daysStr = days.toString();
+    } else {
+      daysStr = "0" + daysStr;
     }
+    
+    document.getElementById('days-ones').src = "/" + daysStr[2] + ".png";
+    
+    const hoursStr = padNumber(hours);
+    document.getElementById('hours-tens').src = "/" + hoursStr[0] + ".png";
+    document.getElementById('hours-ones').src = "/" + hoursStr[1] + ".png";
+    
+    const minutesStr = padNumber(minutes);
+    document.getElementById('minutes-tens').src = "/" + minutesStr[0] + ".png";
+    document.getElementById('minutes-ones').src = "/" + minutesStr[1] + ".png";
+    
+    const secondsStr = padNumber(seconds);
+    document.getElementById('seconds-tens').src = "/" + secondsStr[0] + ".png";
+    document.getElementById('seconds-ones').src = "/" + secondsStr[1] + ".png";
+  }
 
+  function loadingAnimation() {
+    const tubes = document.querySelectorAll('.timer');
+    tubes.forEach(function(tube, index) {
+      tube.src = index % 2 === 0 ? '/11.gif' : '/12.gif';
+    });
+  }
+
+  if (typeof document !== 'undefined') {
     loadingAnimation();
-    setTimeout(function () {
-        updateTime();
-        setInterval(updateTime, 1000);
-    }, 1000);
-};
+    setTimeout(function() {
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }, 1500);
+  }
 </script>
-
