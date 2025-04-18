@@ -5,7 +5,7 @@
         </h1>
     </div>
 
-    <div class="flex w-[90vw] mx-auto overflow-x-auto md:overflow-x-hidden snap-x snap-mandatory scrollbar-hide">
+    <div class="events flex w-[90vw] mx-auto overflow-x-auto md:overflow-x-hidden snap-x snap-mandatory scrollbar-hide">
         <div class="panel transition-all duration-700 ease-in bg-cover bg-center bg-no-repeat text-white cursor-pointer flex-[0.5] md:flex-[0.5] max-w-[85vw] sm:max-w-[70vw] m-[10px] relative active border border-zinc-600 shadow-xl rounded-lg overflow-hidden" style="background-image: url('/events/hackathon.jpeg');">
             <div class="absolute inset-0 bg-black/50 z-0"></div>
             <div class="panel-content relative flex flex-col w-full p-5 z-10">
@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
         
-        const container = document.querySelector('.flex');
+        const container = document.querySelector('.events');
         const paginationContainer = document.createElement('div');
         paginationContainer.className = 'pagination flex justify-center mt-4 gap-2';
         
