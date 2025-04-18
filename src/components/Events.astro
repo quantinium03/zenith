@@ -42,10 +42,22 @@
                         CodeCadet is the perfect platform for coders to push their limits, test their skills, and engage in the thrilling competition. In CodeCadet, Manan brings you an offline coding challenge like no other.
                     </p>
                 </div>
-                <div class="mt-auto">
-                    <p class="text-shadow text-lg md:text-2xl mb-2">- Exciting Goodies</p>
-                    <p class="text-shadow text-lg md:text-2xl">- 2hr Long Contest</p>
-                </div>
+                    <div class="mt-3 flex justify-between">
+                        <div>
+                            <p class="text-shadow text-lg">- Exciting Goodies</p>
+                            <p class="text-shadow text-lg">- 2hr Long Contest</p>
+                        </div>
+                        <div class="flex text-center">
+                        <a
+                          href="https://practice.geeksforgeeks.org/contest/code-cadet-xxiv"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="bg-black border inline-flex items-center justify-center transition-all relative top-0 cursor-pointer px-6 py-2 text-xl rounded-lg font-bold active:top-[3px] transition-colors duration-300 shadow-[3px_4px_0_white] active:shadow-[1px_2px_0_white] max-h-[50px]"
+                        >
+                          REGISTER
+                        </a>
+                        </div>
+                    </div>
             </div>
         </div>
         <div class="panel transition-all duration-700 ease-in bg-cover bg-center bg-no-repeat text-white cursor-pointer flex-[0.5] md:flex-[0.5] max-w-[85vw] m-[10px] relative border border-zinc-600 shadow-xl rounded-lg overflow-hidden" style="background-image: url('/events/tech_and_beyond.jpeg');">
@@ -114,7 +126,8 @@
     
     .panel p,
     .panel h3,
-    .panel div p {
+    .panel div p,
+    .panel div a {
         display: none; 
     }
 
@@ -140,6 +153,7 @@
 
     .panel:hover h3,
     .panel:hover p,
+    .panel:hover div a,
     .panel:hover div p {
         opacity: 1 !important;
         display: block;
@@ -152,7 +166,8 @@
     
     .panel.active h3,
     .panel.active p,
-    .panel.active div p {
+    .panel.active div p,
+    .panel.active div a {
         opacity: 1 !important;
         display: block;
     }
@@ -182,7 +197,8 @@
     
     .panel h3,
     .panel p,
-    .panel div p {
+    .panel div p,
+    .panel div a {
         opacity: 1 !important; 
         font-size: 1.125rem;
     }
