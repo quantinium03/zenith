@@ -4,20 +4,57 @@ import EarthCanvas from "./EarthCanvas.astro";
 <div class="min-h-screen w-full relative overflow-hidden">
   <EarthCanvas />
 
-  <div class="flex flex-col pt-[10vh] lg:pt-[20vh] items-center bg-inherit gap-8 px-4 relative z-10">
-    <div class="flex flex-col items-center">
-      <h1 class="text-5xl lg:text-[160px] font-bold text-center">Zenith 4.0</h1>
-      <h1 class="text-sm lg:text-2xl font-bold w-full text-center">Presented by Manan from JC Bose University YMCA, Faridabad</h1>
-      <h3 class="text-3xl mt-5 lg:text-5xl">HACK IN GEEK OUT</h3>
-    </div>
-    <div class="flex flex-col items-center text-center">
-      <h1 class="text-xl lg:text-3xl font-bold mb-3">25 APRIL - 26 APRIL</h1>
-      <button onclick="window.location.href='https://zenith4-0.devfolio.co/overview'" class="cursor-pointer flex items-center h-[40px]">
-        <img src="/devfolio_button.png" class="h-full object-contain rounded-sm" alt="DEVFOLIO LOGO" />
-      </button>
-    </div>
-    <div class="flex flex-col items-center">
-      <h1 class="text-4xl font-bold w-full text-center">Exciting prizes worth 1LAC+</h1>
+  <div>
+      <div class="ticker">
+          <div class="ticker-title font-bold">
+            <span>The Deadline has been extended till 24 April</span>
+            <span>The Deadline has been extended till 24 April</span>
+            <span>The Deadline has been extended till 24 April</span>
+          </div>
     </div>
   </div>
+    <div class="flex flex-col items-center justify-center w-full bg-inherit px-4 relative z-10">
+      <div class="flex flex-col items-center justify-center">
+        <h1 class="text-5xl lg:text-[160px] font-bold text-center">Zenith 4.0</h1>
+        <h1 class="text-sm lg:text-2xl font-bold w-full text-center">Presented by Manan from JC Bose University YMCA, Faridabad</h1>
+        <h3 class="text-3xl mt-5 lg:text-5xl text-center">HACK IN GEEK OUT</h3>
+      </div>
+      <div class="flex flex-col items-center text-center mt-8">
+        <h1 class="text-xl lg:text-3xl font-bold mb-3">25 APRIL - 26 APRIL</h1>
+        <button onclick="window.location.href='https://zenith4-0.devfolio.co/overview'" class="cursor-pointer flex items-center h-[40px]">
+          <img src="/devfolio_button.png" class="h-full object-contain rounded-sm" alt="DEVFOLIO LOGO" />
+        </button>
+      </div>
+      <div class="flex flex-col items-center mt-8">
+        <h1 class="text-4xl font-bold w-full text-center">Exciting prizes worth 1LAC+</h1>
+      </div>
+    </div>
 </div>
+
+<style>
+.ticker {
+  overflow: hidden;
+  width: 100%;
+  padding: 5px 0 120px;
+}
+
+.ticker-title {
+  width: 2500px;
+  padding-bottom: 5px;
+  color: #fff;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.ticker-title > * {
+  display: inline-block;
+  margin-right: 100px;
+  animation: title 20s infinite linear;
+}
+
+@keyframes title {
+  0% {transform: translateX(0);}
+  100% {transform: translateX(-233px);}
+}
+</style>
+
